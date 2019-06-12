@@ -1,0 +1,25 @@
+.trip-history{
+  display: block;
+  width: 70%;
+}
+.list-history{
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+}
+.trip-history li{
+  color: #464d73;
+  justify-content: center;
+  margin-top: 10px;
+  list-style-type: none;
+  background-color: #ffffff;
+}
+.trip-card{
+  display: flex;
+}
+.icon-trip button{
+  padding:10px;
+}
+.notrips-list{
+    color: #ffffff;
+}

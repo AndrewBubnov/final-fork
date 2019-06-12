@@ -1,0 +1,21 @@
+.drawer-links-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 125px;
+    height: 300px;
+    margin: 20px auto auto 50px;
+    font-weight: 600;
+}
+.drawer-link-regular{
+    color: #464d73;
+    text-decoration: none;
+}
+.drawer-active-link{
+    font-size: 20px;
+    font-weight: 800;
+
+}
+.drawer-link-logout{
+    color: #ff0000;
+}

@@ -1,0 +1,59 @@
+.welcome-user{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    width: 100%;
+    color: #fff;
+}
+.logout-button{
+    margin-top: 30px;
+}
+.type-button-container{
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    height: 40px;
+    /*margin-top: 70px;*/
+}
+.type-button{
+    position: relative;
+    width: 47%;
+    height: 30px;
+    padding: 0;
+    background-color: transparent;
+    border: 1px solid #fff;
+    border-radius: 3px;
+    color: #fff;
+    font-weight: 500;
+    overflow: hidden;
+}
+.add-smart-button{
+    margin-top: 30px;
+}
+.type-button:before{
+    content: "";
+    position: absolute;
+    top: -2px;
+    height: 110%;
+    width: 20%;
+    background: linear-gradient(90deg, rgba(255,255,255,.1), rgba(255,255,255,.5));
+    transform: skewX(-15deg);
+    animation: highlight .5s ease-in forwards;
+}
+
+@keyframes highlight {
+    0% {left: -24%}
+    100% {left: 103%}
+}
+
+.dependent-button-container{
+    margin-top: 30px;
+}
+.smart-button{
+    border: 1px solid red;
+}
+.quick-trips{
+    margin-top: 20px;
+}
