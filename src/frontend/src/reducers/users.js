@@ -1,7 +1,7 @@
 import {
     SET_USER, SET_USER_POINTS, SET_ROLE, SET_SOCIAL_AUTH, MENU_TOGGLE,
     ERROR_POPUP_OPEN, SET_USER_NAME, SET_ERROR_MESSAGE, SET_USER_PHOTO,
-    INITIAL_LOAD
+    INITIAL_LOAD, SET_CURRENT_CAR_PHOTO
 
 } from '../actions/users'
 
@@ -31,6 +31,7 @@ const initialState = {
     topMenuOpen: false,
     errorPopupOpen: false,
     initialLoad: true,
+    currentCarPhoto: '',
 }
 
 function users(state = initialState, action) {
@@ -55,6 +56,8 @@ function users(state = initialState, action) {
             return {...state, user: {...state.user, userPhoto: action.payload}}
         case INITIAL_LOAD:
             return {...state, initialLoad: action.payload}
+        case SET_CURRENT_CAR_PHOTO:
+            return {...state, currentCarPhoto: action.payload}
 
 
         default:

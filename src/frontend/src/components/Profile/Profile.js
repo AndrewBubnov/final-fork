@@ -7,11 +7,12 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import Photo from './Photo/Photo'
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
 import orange from '@material-ui/core/colors/orange'
-import {updateProfile, setPhoto, confirmEmail} from '../../actions/userCreators'
+import {updateProfile, setPhoto, confirmEmail, clearCurrentCarPhoto} from '../../actions/userCreators'
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
 import Car from './Car/Car'
 import ConfirmButton from './ConfirmButton/ConfirmButton'
 import manSihlouette from '../../img/manSihlouette.svg'
+import carSihlouette from '../../img/carSihlouette.svg'
 import ErrorSnackbar from "./ErrorSnackbar/ErrorSnackbar";
 import AddingCar from "./AddingCar/AddingCar";
 import './Profile.css'
@@ -47,6 +48,7 @@ class Profile extends Component {
 
 
     handleAddCar = () => {
+        this.props.clearCurrentCarPhoto()
         this.setState({adding: true})
     }
 
@@ -54,7 +56,7 @@ class Profile extends Component {
         const cars = [...this.state.user.userCars]
         let newCar = this.state.newCar
         newCar.userCarId = null
-        newCar.carPhoto = '/carsPhotos/n_1.jpg'
+        newCar.userCarPhoto = this.props.users.currentCarPhoto
         cars.push(newCar)
         this.setState({user: {...this.state.user, userCars: cars}})
         this.rejectNewCar()
@@ -103,8 +105,8 @@ class Profile extends Component {
         this.props.history.push({pathname: '/smart'})
     }
 
-    setPhotoAndProfile = (photo) => {
-        this.props.setPhoto(photo, this.state.user)
+    setPhotoAndProfile = (photo, subject) => {
+        this.props.setPhoto(photo, this.state.user, subject)
     }
 
     componentDidUpdate(prevProps) {
@@ -149,7 +151,16 @@ class Profile extends Component {
                     handleChange={this.handleChange}
                     submitNewCar={this.submitNewCar}
                     rejectNewCar={this.rejectNewCar}
-                />
+                >
+                    <Photo
+                        setPhoto={this.setPhotoAndProfile}
+                        photo={this.props.users.currentCarPhoto}
+                        sihlouette={carSihlouette}
+                        error={this.props.users.errorPopupOpen}
+                        ratio={18 / 10}
+                        subject='car'
+                    />
+                </AddingCar>
             )
         } else {
             dependentOutput = (
@@ -160,6 +171,8 @@ class Profile extends Component {
                         sihlouette={manSihlouette}
                         error={this.props.users.errorPopupOpen}
                         onFocus={this.onFocus}
+                        ratio={3 / 4}
+                        subject='user'
                     />
                     <MuiThemeProvider theme={theme}>
                         <TextField
@@ -220,6 +233,7 @@ class Profile extends Component {
                         <div className='carlist'>
                             {carList}
                         </div>
+                        {allChecks &&
                         <Button onClick={this.handleAddCar}
                                 color="primary"
                                 classes={{
@@ -232,6 +246,7 @@ class Profile extends Component {
                         >
                             Add new car
                         </Button>
+                        }
                     </MuiThemeProvider>
                 </>
             )
@@ -354,8 +369,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         updateProfile: (user) => dispatch(updateProfile(user)),
-        setPhoto: (photo, user) => dispatch(setPhoto(photo, user)),
+        setPhoto: (photo, user, subject) => dispatch(setPhoto(photo, user, subject)),
         confirmEmail: (email) => dispatch(confirmEmail(email)),
+        clearCurrentCarPhoto: () => dispatch(clearCurrentCarPhoto()),
     }
 }
 

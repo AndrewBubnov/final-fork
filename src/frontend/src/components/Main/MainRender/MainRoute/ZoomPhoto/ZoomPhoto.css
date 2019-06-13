@@ -1,0 +1,10 @@
+.image{
+    height: 100px;
+    transition: transform .3s ease-in-out;
+}
+.original{
+    transform: scale(1);
+}
+.zoomed{
+    transform: scale(1.3);
+}

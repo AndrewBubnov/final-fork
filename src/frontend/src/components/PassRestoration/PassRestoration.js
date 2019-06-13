@@ -8,7 +8,7 @@ import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
 import Button from '@material-ui/core/Button'
 import { restorePassword } from '../../actions/userCreators'
 
-//const email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
 
 const theme = createMuiTheme({
   palette: {

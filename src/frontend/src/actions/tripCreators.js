@@ -59,7 +59,7 @@ export const setMainTrips = (id) => async dispatch => {
             joinStatusArray.push(element.tripJoinStatus)
             idArray.push(element.tripId)
             if (element.userCar){
-                element.user.userCar = element.userCar.userCarName + ' ' + element.userCar.userCarColour
+                element.user.userCar = element.userCar
             }
             userArray.push(element.user)
             let currentRouteArray = []

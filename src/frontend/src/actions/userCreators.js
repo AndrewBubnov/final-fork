@@ -1,7 +1,7 @@
 import {
     SET_USER, SET_USER_POINTS, SET_SOCIAL_AUTH, MENU_TOGGLE,
     ERROR_POPUP_OPEN, SET_ERROR_MESSAGE,
-    USER_LOGOUT, INITIAL_LOAD, SET_USER_PHOTO,
+    USER_LOGOUT, INITIAL_LOAD, SET_USER_PHOTO, SET_CURRENT_CAR_PHOTO
 } from './users'
 
 import {callApi, setLocalStorage, removeTokens} from '../utils/utils'
@@ -149,13 +149,17 @@ export const setErrorMessage = (message) => dispatch => {
 
 //* **********************
 
-export const setPhoto = (image, user) => async dispatch => {
+export const setPhoto = (image, user, subject) => async dispatch => {
     dispatch({type: SET_USER, payload: user})
     let data = new FormData();
     data.append('fileUpload', image);
     try {
         const response = await callApi('put', 'api/images', data)
-        dispatch({type: SET_USER_PHOTO, payload: response.data})
+        if (subject === 'user'){
+            dispatch({type: SET_USER_PHOTO, payload: response.data})
+        } else {
+            dispatch({type: SET_CURRENT_CAR_PHOTO, payload: response.data})
+        }
     } catch (err) {
         dispatch(errorPopupShow())
     }
@@ -193,7 +197,6 @@ export const errorPopupShow = () => dispatch => {
 }
 
 export const restorePassword = (email) => dispatch =>{
-    // console.log('email=', email)
     callApi('post', 'api/logins/email', {userLogin: email})
       .then(resp => console.log(resp))
       .catch(console.log)
@@ -202,4 +205,9 @@ export const restorePassword = (email) => dispatch =>{
 
 export const setInitialLoadToFalse = () => dispatch => {
     dispatch({type: INITIAL_LOAD, payload: false})
+}
+//* **********************
+
+export const clearCurrentCarPhoto = () => dispatch => {
+    dispatch({type: SET_CURRENT_CAR_PHOTO, payload: ''})
 }
