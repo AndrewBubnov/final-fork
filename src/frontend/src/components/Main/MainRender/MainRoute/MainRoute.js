@@ -64,14 +64,13 @@ const MainRoute = ({setUserMainTripShown, setCurrentMainTripParams, mainTripPara
                 <div className='companion-details-center'>
                     {mainTrip.userCar ? mainTrip.userCar.userCarName + ' ' + mainTrip.userCar.userCarColour : null}
                 </div>
-
                 <div style={{display: 'flex', justifyContent: 'space-between', position: 'relative'}}>
                     <div>
                         {mainTrip.userCar.userCarPhoto ?
-                            <ZoomPhoto src={mainTrip.userCar.userCarPhoto}/> : null}
+                            <ZoomPhoto src={mainTrip.userCar.userCarPhoto} subject={'car'}/> : null}
                     </div>
                     <div>
-                        <ZoomPhoto src={mainTrip.userPhoto}/>
+                        <ZoomPhoto src={mainTrip.userPhoto} subject={'user'}/>
                     </div>
                 </div>
             </>
@@ -89,7 +88,7 @@ const MainRoute = ({setUserMainTripShown, setCurrentMainTripParams, mainTripPara
                     </div>
                 </div>
                 <div className='companion-details companion-details-right'>
-                    <ZoomPhoto src={mainTrip.userPhoto}/>
+                    <ZoomPhoto src={mainTrip.userPhoto} subject={'user'}/>
                 </div>
             </div>
         )
