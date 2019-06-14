@@ -6,8 +6,9 @@ import PropTypes from 'prop-types';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import orange from "@material-ui/core/colors/orange";
+import Zoom from '@material-ui/core/Zoom'
 
-const AddingCar = ({ userCarName, userCarColour, handleChange, submitNewCar, rejectNewCar, classes }) => {
+const AddingCar = ({ userCarName, userCarColour, handleChange, submitNewCar, rejectNewCar, classes, ...props }) => {
     return(
         <MuiThemeProvider theme={theme}>
             < span className='carlist-header'>Your new car is:</span>
@@ -36,10 +37,11 @@ const AddingCar = ({ userCarName, userCarColour, handleChange, submitNewCar, rej
                 onChange={handleChange}
 
             />
+            {props.children}
+            <Zoom direction="down" in={userCarName.length !== 0 && userCarColour.length !== 0 && props.children.props.photo.length !== 0} >
             <div className='newcar-buttons-container'>
                 <Button
                     onClick={ submitNewCar }
-                    disabled={ userCarName.length === 0 || userCarColour.length === 0 }
                     classes={{
                         root: classes.submitButton,
                         label: classes.label
@@ -57,6 +59,7 @@ const AddingCar = ({ userCarName, userCarColour, handleChange, submitNewCar, rej
                     Reject
                 </Button>
             </div>
+            </Zoom>
         </MuiThemeProvider>
     )
 }

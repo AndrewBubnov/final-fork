@@ -39,7 +39,7 @@ const styles = {
 
 const acceptedFileTypes = 'image/x-png, image/png, image/jpg, image/jpeg, image/gif'
 
-const Photo = ({ classes, setPhoto, photo, sihlouette, error, onFocus }) => {
+const Photo = ({ classes, setPhoto, photo, sihlouette, error, onFocus, ratio, subject }) => {
     const [ imgSrc, setImgSrc] = useState(null)
     const [ base64, setBase64] = useState('')
     const [avatarShown, setAvatarShown] = useState(true)
@@ -75,7 +75,7 @@ const Photo = ({ classes, setPhoto, photo, sihlouette, error, onFocus }) => {
 
     const saveImage = () => {
         rejectImage()
-        setPhoto(base64)
+        setPhoto(base64, subject)
         avatarShowToggle(false, false)
     }
 
@@ -104,8 +104,8 @@ const Photo = ({ classes, setPhoto, photo, sihlouette, error, onFocus }) => {
                 <Cropper
                     ref={cropper}
                     src={imgSrc}
-                    style={{height: 300, width: '100%'}}
-                    aspectRatio={3 / 4}
+                    style={{height: 200, width: '100%'}}
+                    aspectRatio={ratio}
                     guides={false}
                     crop={crop}
                 />
@@ -133,7 +133,7 @@ const Photo = ({ classes, setPhoto, photo, sihlouette, error, onFocus }) => {
     if (avatarShown && !uploadingOpen){
         userAvatarBox = (
             <div onClick={() => uploadFile.current.click()}>
-                <img src={userAvatar} style={{height: 100}} alt=''/>
+                <img src={userAvatar} style={{height: subject === 'user' ? 100 : 70}} alt=''/>
             </div>
         )
     } else if (!avatarShown && !uploadingOpen && spinnerAbleShow){

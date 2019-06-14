@@ -1,0 +1,18 @@
+.companion-details{
+    display: flex;
+    align-items: center;
+}
+.companion-details-left{
+    height: 50px;
+    text-align: left;
+}
+.companion-details-center{
+    height: 35px;
+}
+.companion-details-right{
+    text-align: right;
+}
+.phone-link, .phone-link:active, .phone-link:visited, .phone-link:focus{
+    text-decoration: none;
+    font-weight: bold;
+}

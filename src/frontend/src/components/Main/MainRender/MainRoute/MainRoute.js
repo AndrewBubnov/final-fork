@@ -1,15 +1,16 @@
 import React, {useState} from 'react'
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ZoomPhoto from './ZoomPhoto/ZoomPhoto'
+import './MainRoute.css'
 
 
-
-const MainRoute = ({ setUserMainTripShown, setCurrentMainTripParams, mainTripParams, index, mainTripUserArray, joinStatusArray, item, classes}) => {
+const MainRoute = ({setUserMainTripShown, setCurrentMainTripParams, mainTripParams, index, mainTripUserArray, joinStatusArray, item, classes}) => {
     const [expanded, setExpanded] = useState(false)
     let timeout = null;
     let startTouch = 0;
@@ -47,7 +48,53 @@ const MainRoute = ({ setUserMainTripShown, setCurrentMainTripParams, mainTripPar
         }
     }
 
-    return(
+
+    let tabContent = null
+    const mainTrip = mainTripUserArray[index]
+    if (mainTrip.userCar) {
+        tabContent = (
+            <>
+                <div className='companion-details-center'>
+                    {mainTrip.userName}
+                </div>
+                <div className='companion-details-center'>
+                    <a className='phone-link' style={style[setTabStyle(index)]}
+                       href={`tel:${mainTrip.userPhone}`}>{mainTrip.userPhone}</a>
+                </div>
+                <div className='companion-details-center'>
+                    {mainTrip.userCar ? mainTrip.userCar.userCarName + ' ' + mainTrip.userCar.userCarColour : null}
+                </div>
+                <div style={{display: 'flex', justifyContent: 'space-between', position: 'relative'}}>
+                    <div>
+                        {mainTrip.userCar.userCarPhoto ?
+                            <ZoomPhoto src={mainTrip.userCar.userCarPhoto} subject={'car'}/> : null}
+                    </div>
+                    <div>
+                        <ZoomPhoto src={mainTrip.userPhoto} subject={'user'}/>
+                    </div>
+                </div>
+            </>
+        )
+    } else {
+        tabContent = (
+            <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                <div>
+                    <div className='companion-details companion-details-left'>
+                        {mainTrip.userName}
+                    </div>
+                    <div className='companion-details companion-details-left'>
+                        <a className='phone-link' style={style[setTabStyle(index)]}
+                           href={`tel:${mainTrip.userPhone}`}>{mainTrip.userPhone}</a>
+                    </div>
+                </div>
+                <div className='companion-details companion-details-right'>
+                    <ZoomPhoto src={mainTrip.userPhoto} subject={'user'}/>
+                </div>
+            </div>
+        )
+    }
+
+    return (
         <ExpansionPanel
             className={classes.root}
             expanded={expanded}
@@ -57,30 +104,19 @@ const MainRoute = ({ setUserMainTripShown, setCurrentMainTripParams, mainTripPar
             onMouseDown={mouseDown}
         >
             <ExpansionPanelSummary
-                onClick={() => {setUserMainTripShown(false); setCurrentMainTripParams(mainTripParams[index + 1])}}
+                onClick={() => {
+                    setUserMainTripShown(false);
+                    setCurrentMainTripParams(mainTripParams[index + 1])
+                }}
                 expandIcon={<ExpandMoreIcon className={classes.expandIcon}/>}
                 style={style[setTabStyle(index)]}
             >
                 <Typography className={classes.heading}>{item[0]} - {item[item.length - 1]}</Typography>
             </ExpansionPanelSummary>
-            <ExpansionPanelDetails className={classes.details} style={style[setTabStyle(index)]} >
-                <div style={{display: 'flex', justifyContent: 'space-between', height: 100}}>
-                    <div>
-                        <div className='companion-details companion-details-left'>
-                            {mainTripUserArray[index].userName}
-                        </div>
-                        <div className='companion-details companion-details-left'>
-                            {mainTripUserArray[index].userCar ? mainTripUserArray[index].userCar : null}
-                        </div>
-                        <div className='companion-details companion-details-left'>
-                            <a className='phone-link' style={style[setTabStyle(index)]}
-                               href={`tel:${mainTripUserArray[index].userPhone}`}>{mainTripUserArray[index].userPhone}</a>
-                        </div>
-                    </div>
-                    <div className='companion-details companion-details-right'>
-                        <img src={mainTripUserArray[index].userPhoto} style={{height: 100}} alt=''/>
-                    </div>
-                </div>
+            <ExpansionPanelDetails className={classes.details} style={style[setTabStyle(index)]}>
+
+                {tabContent}
+
             </ExpansionPanelDetails>
         </ExpansionPanel>
     )
