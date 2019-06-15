@@ -34,6 +34,7 @@ public class UserFacade extends AbstractDtoFacade<User, UserResponseTrip, UserRe
     userResponse.setUserPhoto(user.getUserPhoto());
     return userResponse;
   }
+
   private List<UserCar> removeDeletedCars(List<UserCar> userCars) {
     for (UserCar userCar : userCars) {
       if (userCar.getUserCarIsDeleted() != null && userCar.getUserCarIsDeleted() == 1) {
