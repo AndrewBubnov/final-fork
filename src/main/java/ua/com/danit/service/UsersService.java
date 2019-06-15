@@ -37,6 +37,7 @@ public class UsersService {
   private UserTokensRepository userTokensRepository;
 
   private static final int userPointsMaxQty = 5;
+  private static final int isDeleted = 1;
 
   @Autowired
   public UsersService(UsersRepository usersRepository,
@@ -160,7 +161,7 @@ public class UsersService {
     }
     checkEmailFormat(user.getUserMail());
     user.setUserPhone(normalizeAndCheckPhoneFormat(user.getUserPhone()));
-    //Update some fields
+    //Update some fields with original data
     user.setUserId(userFromToken.getUserId());
     user.setUserPassword(userFromToken.getUserPassword());
     user.setCreatedDate(userFromToken.getCreatedDate());
@@ -180,14 +181,13 @@ public class UsersService {
     List<UserCar> carsToDelete = new LinkedList<>();
     for (UserCar userCarOld : userFromToken.getUserCars()) {
       if (!user.getUserCars().contains(userCarOld)) {
-        carsToDelete.add(userCarOld);
+        userCarOld.setUserCarIsDeleted(isDeleted);
+        user.getUserCars().add(userCarOld);
       }
-    }
-    if (carsToDelete.size() > 0) {
-      userCarsRepository.deleteInBatch(carsToDelete);
     }
     user = projection(user, "", "car", "token", "point");
     user = usersRepository.save(user);
+
     return userFacade.mapEntityToResponse(user);
   }
 
@@ -293,4 +293,6 @@ public class UsersService {
     }
     return user;
   }
+
+
 }
