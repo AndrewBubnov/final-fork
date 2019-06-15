@@ -31,6 +31,7 @@ public class UserCar extends Auditable {
   @ManyToOne
   @JoinColumn(name = "USER_CAR_USER_ID", referencedColumnName = "userId")
   private User user;
+  private Integer userCarIsDeleted;
 
   @Override
   public boolean equals(Object obj) {

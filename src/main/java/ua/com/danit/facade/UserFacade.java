@@ -5,7 +5,10 @@ import org.springframework.stereotype.Component;
 import ua.com.danit.dto.UserResponseTrip;
 import ua.com.danit.dto.UserResponse;
 import ua.com.danit.entity.User;
+import ua.com.danit.entity.UserCar;
 import ua.com.danit.service.ImageDbProviderImpl;
+
+import java.util.List;
 
 @Component
 public class UserFacade extends AbstractDtoFacade<User, UserResponseTrip, UserResponse> {
@@ -24,8 +27,20 @@ public class UserFacade extends AbstractDtoFacade<User, UserResponseTrip, UserRe
     userResponse.setUserTokenRefresh(user.getUserTokens().get(0).getUserTokenRefresh());
     userResponse.setUserTokenAccess(user.getUserTokens().get(0).getUserTokenAccess());
     userResponse.setUserPoints(userPointFacade.mapEntityListToResponseDtoList(user.getUserPoints()));
+    if (user.getUserCars() != null && user.getUserCars().size() > 0) {
+      user.setUserCars(removeDeletedCars(user.getUserCars()));
+    }
     userResponse.setUserCars(userCarFacade.mapEntityListToResponseDtoList(user.getUserCars()));
     userResponse.setUserPhoto(user.getUserPhoto());
     return userResponse;
+  }
+
+  private List<UserCar> removeDeletedCars(List<UserCar> userCars) {
+    for (UserCar userCar : userCars) {
+      if (userCar.getUserCarIsDeleted() != null && userCar.getUserCarIsDeleted() == 1) {
+        userCars.remove(userCar);
+      }
+    }
+    return userCars;
   }
 }
