@@ -107,6 +107,11 @@ const MainRoute = ({setUserMainTripShown, setCurrentMainTripParams, mainTripPara
         )
     }
 
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const date = new Date(mainTrip.tripDateTime)
+    const stringDate = date.getDate() + ' ' + monthNames[date.getMonth()+1] + ' ' + date.getFullYear()
+    const stringTime = date.getHours() + ':' + date.getMinutes()
+
     return (
         <ExpansionPanel
             className={classes.root}
@@ -124,7 +129,12 @@ const MainRoute = ({setUserMainTripShown, setCurrentMainTripParams, mainTripPara
                 expandIcon={<ExpandMoreIcon className={classes.expandIcon}/>}
                 style={style[setTabStyle(index)]}
             >
+                <div>
+                <Typography className={classes.heading}><span className='string-date'>{stringDate}</span>
+                    <span>  </span>
+                    <span className='string-time'>{stringTime}</span></Typography>
                 <Typography className={classes.heading}>{item[0]} - {item[item.length - 1]}</Typography>
+                </div>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails className={classes.details} style={style[setTabStyle(index)]}>
 
