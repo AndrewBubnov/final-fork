@@ -6,7 +6,7 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ZoomPhoto from './ZoomPhoto/ZoomPhoto'
+import ZoomPhoto from '../../../ZoomPhoto/ZoomPhoto'
 import './MainRoute.css'
 
 
@@ -67,10 +67,19 @@ const MainRoute = ({setUserMainTripShown, setCurrentMainTripParams, mainTripPara
                 <div style={{display: 'flex', justifyContent: 'space-between', position: 'relative'}}>
                     <div>
                         {mainTrip.userCar.userCarPhoto ?
-                            <ZoomPhoto src={mainTrip.userCar.userCarPhoto} subject={'car'}/> : null}
+                            <ZoomPhoto
+                                src={mainTrip.userCar.userCarPhoto}
+                                subject={'car'}
+                                height={100}
+                            /> :
+                            null}
                     </div>
                     <div>
-                        <ZoomPhoto src={mainTrip.userPhoto} subject={'user'}/>
+                        <ZoomPhoto
+                            src={mainTrip.userPhoto}
+                            subject={'user'}
+                            height={100}
+                        />
                     </div>
                 </div>
             </>
@@ -88,7 +97,11 @@ const MainRoute = ({setUserMainTripShown, setCurrentMainTripParams, mainTripPara
                     </div>
                 </div>
                 <div className='companion-details companion-details-right'>
-                    <ZoomPhoto src={mainTrip.userPhoto} subject={'user'}/>
+                    <ZoomPhoto
+                        src={mainTrip.userPhoto}
+                        subject={'user'}
+                        height={100}
+                    />
                 </div>
             </div>
         )

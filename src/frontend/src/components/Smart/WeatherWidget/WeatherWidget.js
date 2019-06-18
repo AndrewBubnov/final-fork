@@ -1,8 +1,9 @@
-import React, { useState, useEffect }  from 'react'
+import React, {useState, useEffect} from 'react'
 import {connect} from "react-redux";
 import Zoom from '@material-ui/core/Zoom'
 import './WeatherWidget.css'
 import axios from 'axios'
+import SpinnerMini from "../../Spinner/SpinnerMini/SpinnerMini";
 
 
 const WeatherWidget = (props) => {
@@ -10,7 +11,7 @@ const WeatherWidget = (props) => {
     const [temperature, setTemperature] = useState(null)
 
     useEffect(() => {
-        if (props.coordinates){
+        if (props.coordinates) {
             axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${props.coordinates.latitude}&lon=${props.coordinates.longitude}&APPID=8b69689b87a548718f18b512b6057679`)
                 .then(res => {
                     setIcon(res.data.weather[0].id)
@@ -24,14 +25,16 @@ const WeatherWidget = (props) => {
             <Zoom in={temperature !== null}
                   timeout={100}
             >
-            <div className='widget-container'>
-                <i className={weatherIcon}></i>
-                <p className='widget-paragraph'>{temperature} &#176;C</p>
-            </div>
+                <>
+                    <i className={weatherIcon}></i>
+                    <p className='widget-paragraph'>{temperature} &#176;C</p>
+                </>
             </Zoom>
-        ) : null
-    return(
-        widget
+        ) : <SpinnerMini/>
+    return (
+        <div className='widget-container'>
+            {widget}
+        </div>
     )
 }
 
@@ -40,7 +43,6 @@ const mapStateToProps = (state) => {
         coordinates: state.trips.myCoordinates,
     }
 }
-
 
 
 export default connect(mapStateToProps, null)(WeatherWidget)

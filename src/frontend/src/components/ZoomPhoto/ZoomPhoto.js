@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import Dialog from '@material-ui/core/Dialog';
 
 
-const ZoomPhoto = ({ src, subject }) => {
+const ZoomPhoto = ({ src, subject, height }) => {
     const [zoomed, setZoomed] = useState(false)
     const handleClick = () => {
         setZoomed(!zoomed)
@@ -14,7 +14,7 @@ const ZoomPhoto = ({ src, subject }) => {
     const zoomedHeight = subject === 'user' ? '50vh' : 200
     let outputImage = null
     if (!zoomed) {
-        outputImage = <img onClick={handleClick} src={src} style={{height: 100}} alt=''/>
+        outputImage = <img onClick={handleClick} src={src} style={{height}} alt=''/>
     } else {
         outputImage = (
             <Dialog

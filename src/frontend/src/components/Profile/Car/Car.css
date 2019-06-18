@@ -1,15 +1,19 @@
 .single-car-line{
     width: 100%;
     height: 40px;
-    overflow: hidden;
-    background-color: #fff;
-    border: 1px solid #ccc;
-
 }
 .single-car{
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     width: 100%;
     height: 40px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+}
+.car-name{
+    margin-left: 10px;
+}
+.car-photo{
+    margin-right: 10px;
 }
