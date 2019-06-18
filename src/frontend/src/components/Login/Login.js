@@ -5,7 +5,7 @@ import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
 import orange from '@material-ui/core/colors/orange'
 import {connect} from 'react-redux'
-import { setAuthorization, setSocialAuth, setAuthByToken } from '../../actions/userCreators'
+import { setAuthorization, setSocialAuth, setAuthByToken, errorPopupShow } from '../../actions/userCreators'
 import { setMainTripIdFromStorage } from '../../actions/tripCreators'
 import {withStyles} from '@material-ui/core/styles'
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -39,9 +39,9 @@ class Login extends Component {
             token: '',
             confirmPassword: ''
         },
-        isSigned: false,
         signType: 'log-in',
         passwordIsHidden: true,
+        firebaseAuthed: false,
         error: {
             login: '',
             password: '',
@@ -96,28 +96,27 @@ class Login extends Component {
 
     componentDidMount() {
         this.props.setAuthByToken();
-        if (localStorage.getItem('tripId') && localStorage.getItem('iTripper_page') === '/main'){
+        if (localStorage.getItem('tripId') && localStorage.getItem('iTripper_page') === '/main') {
             this.props.setMainTripIdFromStorage()
         }
-
-        firebase.auth().onAuthStateChanged(authenticated => {
-            if (authenticated) {
-                let token = null
-                firebase.auth().currentUser.getIdToken()
-                    .then(result => token = result)
-                    .catch(console.log)
-                authenticated.getIdToken()
-                    .then(res => {
-                        const user = {login: firebase.auth().currentUser.email, token}
-                        this.setAuth(user)
+            firebase.auth().onAuthStateChanged(authenticated => {
+                if (authenticated && !this.state.firebaseAuthed) {
+                    this.setState({firebaseAuthed: true}, () => {
+                        let token = null
+                        firebase.auth().currentUser.getIdToken()
+                            .then(result => {
+                                token = result
+                                const user = {login: firebase.auth().currentUser.email, token}
+                                this.setAuth(user)
+                            })
+                            .catch(err => this.props.errorPopupShow())
                     })
-                // console.log("authenticated", authenticated)
-            }
-        })
+                }
+            })
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.props.users.isAuthenticated !== prevProps.users.isAuthenticated && this.props.users.isAuthenticated) {
+        if ((this.props.users.isAuthenticated !== prevProps.users.isAuthenticated) && this.props.users.isAuthenticated) {
             let path = null
             if (this.state.signType === 'log-in') {
                 if (localStorage.getItem('iTripper_page')) {
@@ -341,7 +340,8 @@ const mapDispatchToProps = (dispatch) => {
         setAuthorization: (state, signType) => dispatch(setAuthorization(state, signType)),
         setSocialAuth: (auth) => dispatch(setSocialAuth(auth)),
         setAuthByToken: () => dispatch(setAuthByToken()),
-        setMainTripIdFromStorage: () => dispatch(setMainTripIdFromStorage())
+        setMainTripIdFromStorage: () => dispatch(setMainTripIdFromStorage()),
+        errorPopupShow: () => dispatch(errorPopupShow()),
     }
 }
 
