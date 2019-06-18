@@ -61,6 +61,7 @@ export const setMainTrips = (id) => async dispatch => {
             if (element.userCar){
                 element.user.userCar = element.userCar
             }
+            element.user.tripDateTime = element.tripDateTime
             userArray.push(element.user)
             let currentRouteArray = []
             let routeRequestParams = {
