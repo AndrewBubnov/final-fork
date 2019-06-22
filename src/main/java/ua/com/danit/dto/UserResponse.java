@@ -9,6 +9,7 @@ public class UserResponse {
   private String userPhone;
   private String userMail;
   private String userPhoto;
+  private String userRole;
   private Integer userIsOkUserPhoto;
   private Integer userIsOkCarPhoto;
   private Integer userIsConfirmedMail;

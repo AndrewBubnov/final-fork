@@ -165,6 +165,7 @@ public class UsersService {
     user.setUserId(userFromToken.getUserId());
     user.setUserPassword(userFromToken.getUserPassword());
     user.setCreatedDate(userFromToken.getCreatedDate());
+    user.setUserRole(userFromToken.getUserRole());
     if (user.getUserPoints() != null && user.getUserPoints().size() > 0) {
       for (UserPoint userPoint : user.getUserPoints()) {
         userPoint.setUser(user);
@@ -244,6 +245,7 @@ public class UsersService {
     user.setUserTokens(new LinkedList<>());
     user.setUserCars(new LinkedList<>());
     user.setUserPoints(new LinkedList<>());
+    user.setUserRole("user");
     return user;
   }
 
