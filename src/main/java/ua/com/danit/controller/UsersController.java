@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ua.com.danit.dto.UserModerationResponse;
 import ua.com.danit.dto.UserResponse;
 import ua.com.danit.entity.User;
 import ua.com.danit.service.UserTokensService;
@@ -31,4 +32,13 @@ public class UsersController {
     return new ResponseEntity<>(usersService.putUserProfile(user, userTokensService.findUserByAccessToken(authorization)),
         HttpStatus.OK);
   }
+
+  @PutMapping("moderation")
+  public ResponseEntity<String> putUserModeration(@RequestBody UserModerationResponse userModerationResponse,
+                                                  @RequestHeader String authorization) {
+    return new ResponseEntity<>(usersService.putUserModeration(userModerationResponse,
+        userTokensService.findUserByAccessToken(authorization)),
+        HttpStatus.OK);
+  }
+
 }

@@ -3,6 +3,7 @@ package ua.com.danit.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.com.danit.dto.LoginMode;
+import ua.com.danit.dto.UserModerationResponse;
 import ua.com.danit.dto.UserResponse;
 import ua.com.danit.dto.UserTokenResponse;
 import ua.com.danit.entity.UserCar;
@@ -297,4 +298,17 @@ public class UsersService {
   }
 
 
+  public String putUserModeration(UserModerationResponse userModerationResponse, User userByAccessToken) {
+    if (checkUserRole(userByAccessToken, "admin")) {
+      usersRepository.putUserModeration(userModerationResponse.getUserId(), userModerationResponse.getUserIsOkUserPhoto(),
+          userModerationResponse.getUserIsOkCarPhoto());
+    } else {
+      throw new ApplicationException("Error! Data was not updated, because user has no admin privileges!");
+    }
+    return "Ok!";
+  }
+
+  private boolean checkUserRole(User userByAccessToken, String role) {
+    return userByAccessToken.getUserRole().contains(role);
+  }
 }
