@@ -8,6 +8,7 @@ import ua.com.danit.entity.User;
 import ua.com.danit.entity.UserCar;
 import ua.com.danit.service.ImageDbProviderImpl;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Component
@@ -42,5 +43,14 @@ public class UserFacade extends AbstractDtoFacade<User, UserResponseTrip, UserRe
       }
     }
     return userCars;
+  }
+
+  @Override
+  public List<UserResponse> mapEntityListToResponseDtoList(List<User> users) {
+    List<UserResponse> list = new LinkedList<>();
+    for (User user : users) {
+      list.add(mapEntityToResponse(user));
+    }
+    return list;
   }
 }
