@@ -18,4 +18,8 @@ public interface UsersRepository extends JpaRepository<User, Long> {
       "UPDATE User u SET u.userIsOkUserPhoto = ?2, u.userIsOkCarPhoto = ?3"
           + " WHERE u.userId = ?1")
   void putUserModeration(Long userId, Integer userIsOkUserPhoto, Integer userIsOkCarPhoto);
+
+
+  List<User> findFirstByUserIsOkCarPhotoIsNotOrUserIsOkUserPhotoIsNot(int car, int user);
+
 }
