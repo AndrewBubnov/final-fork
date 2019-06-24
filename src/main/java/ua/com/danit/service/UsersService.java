@@ -314,7 +314,8 @@ public class UsersService {
 
   public List<UserResponse> getUserListForModeration(User userByAccessToken) {
     if (checkUserRole(userByAccessToken, "admin")) {
-      return userFacade.mapEntityListToResponseDtoList(usersRepository.findFirstByUserIsOkCarPhotoIsNotOrUserIsOkUserPhotoIsNot(1,1));
+      return userFacade.mapEntityListToResponseDtoList(
+          usersRepository.findFirstByUserIsOkCarPhotoIsNotOrUserIsOkUserPhotoIsNot(1,1));
     } else {
       throw new ApplicationException("Error! You have no admin privileges, to get data!");
     }

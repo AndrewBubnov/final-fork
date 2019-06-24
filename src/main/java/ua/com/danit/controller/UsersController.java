@@ -45,8 +45,9 @@ public class UsersController {
   }
 
   @GetMapping("moderationlist")
-  public ResponseEntity<List<UserResponse>> getUserListForModeration (@RequestHeader String authorization) {
-    return new ResponseEntity<>(usersService.getUserListForModeration(userTokensService.findUserByAccessToken(authorization)),
+  public ResponseEntity<List<UserResponse>> getUserListForModeration(@RequestHeader String authorization) {
+    return new ResponseEntity<>(usersService.getUserListForModeration(
+        userTokensService.findUserByAccessToken(authorization)),
         HttpStatus.OK);
   }
 
