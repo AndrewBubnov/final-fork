@@ -2,11 +2,11 @@ package ua.com.danit.facade;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ua.com.danit.dto.UserResponseModeration;
 import ua.com.danit.dto.UserResponseTrip;
 import ua.com.danit.dto.UserResponse;
 import ua.com.danit.entity.User;
 import ua.com.danit.entity.UserCar;
-import ua.com.danit.service.ImageDbProviderImpl;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -36,6 +36,16 @@ public class UserFacade extends AbstractDtoFacade<User, UserResponseTrip, UserRe
     return userResponse;
   }
 
+  public UserResponseModeration mapEntityToResponseModeration(User user) {
+    UserResponseModeration userResponseModeration = modelMapper.map(user, UserResponseModeration.class);
+    if (user.getUserCars() != null && user.getUserCars().size() > 0) {
+      user.setUserCars(removeDeletedCars(user.getUserCars()));
+    }
+    userResponseModeration.setUserCars(userCarFacade.mapEntityListToResponseDtoList(user.getUserCars()));
+    userResponseModeration.setUserPhoto(user.getUserPhoto());
+    return userResponseModeration;
+  }
+
   private List<UserCar> removeDeletedCars(List<UserCar> userCars) {
     for (UserCar userCar : userCars) {
       if (userCar.getUserCarIsDeleted() != null && userCar.getUserCarIsDeleted() == 1) {
@@ -53,4 +63,13 @@ public class UserFacade extends AbstractDtoFacade<User, UserResponseTrip, UserRe
     }
     return list;
   }
+
+  public List<UserResponseModeration> mapEntityListToResponseModerationList(List<User> users) {
+    List<UserResponseModeration> list = new LinkedList<>();
+    for (User user : users) {
+      list.add(mapEntityToResponseModeration(user));
+    }
+    return list;
+  }
+
 }

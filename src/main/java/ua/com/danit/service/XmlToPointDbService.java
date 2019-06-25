@@ -43,8 +43,12 @@ public class XmlToPointDbService extends Thread {
     System.out.println("Map Points export from XML to DB start.");
     String xmlFileName = env.getProperty("application.map.xmlsource");
     String xmlFileReadRowsQty = env.getProperty("application.map.xmlsourcesavetodbqty");
-    loadXmlFile(xmlFileName, xmlFileReadRowsQty);
-    System.out.println("Map Points export from XML to DB is finished");
+    if (pointsRepository.count() < 10) {
+      loadXmlFile(xmlFileName, xmlFileReadRowsQty);
+      System.out.println("Map Points export from XML to DB is finished.");
+    } else {
+      System.out.println("Map Points already available in DB!");
+    }
   }
 
   void loadXmlFile(String fileName, String xmlFileReadRowsQty) {
@@ -59,7 +63,6 @@ public class XmlToPointDbService extends Thread {
     } catch (ParserConfigurationException | SAXException | IOException e) {
       throw new ApplicationException("Error! Cannot parse map.xml!");
     }
-
     //Extract node list
     if (xmlDoc == null) {
       return;

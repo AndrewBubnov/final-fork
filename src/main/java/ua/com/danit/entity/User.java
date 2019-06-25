@@ -26,7 +26,6 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = false)
 @Builder
 @Entity
-@ToString
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "users")
 public class User extends Auditable {
@@ -50,4 +49,14 @@ public class User extends Auditable {
   private List<UserPoint> userPoints;
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
   private List<UserToken> userTokens;
+
+  @Override
+  public String toString() {
+    return "User{"
+        + "userId=" + userId
+        + ", userName='" + userName + '\''
+        + ", userMail='" + userMail + '\''
+        + ", userRole='" + userRole + '\''
+        + '}';
+  }
 }

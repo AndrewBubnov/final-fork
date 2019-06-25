@@ -5,9 +5,9 @@ import org.springframework.stereotype.Service;
 import ua.com.danit.dto.LoginMode;
 import ua.com.danit.dto.UserModerationResponse;
 import ua.com.danit.dto.UserResponse;
+import ua.com.danit.dto.UserResponseModeration;
 import ua.com.danit.dto.UserTokenResponse;
 import ua.com.danit.entity.UserCar;
-import ua.com.danit.entity.Point;
 import ua.com.danit.entity.User;
 import ua.com.danit.entity.UserPoint;
 import ua.com.danit.entity.UserToken;
@@ -312,10 +312,10 @@ public class UsersService {
     return userByAccessToken.getUserRole().contains(role);
   }
 
-  public List<UserResponse> getUserListForModeration(User userByAccessToken) {
+  public List<UserResponseModeration> getUserListForModeration(User userByAccessToken) {
     if (checkUserRole(userByAccessToken, "admin")) {
-      return userFacade.mapEntityListToResponseDtoList(
-          usersRepository.findFirstByUserIsOkCarPhotoIsNotOrUserIsOkUserPhotoIsNot(1,1));
+      List<User> first10ByUsers = usersRepository.getUserListForModeration();
+      return userFacade.mapEntityListToResponseModerationList(first10ByUsers);
     } else {
       throw new ApplicationException("Error! You have no admin privileges, to get data!");
     }

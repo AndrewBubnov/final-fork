@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ua.com.danit.dto.UserModerationResponse;
 import ua.com.danit.dto.UserResponse;
+import ua.com.danit.dto.UserResponseModeration;
 import ua.com.danit.entity.User;
 import ua.com.danit.service.UserTokensService;
 import ua.com.danit.service.UsersService;
@@ -45,7 +46,7 @@ public class UsersController {
   }
 
   @GetMapping("moderationlist")
-  public ResponseEntity<List<UserResponse>> getUserListForModeration(@RequestHeader String authorization) {
+  public ResponseEntity<List<UserResponseModeration>> getUserListForModeration(@RequestHeader String authorization) {
     return new ResponseEntity<>(usersService.getUserListForModeration(
         userTokensService.findUserByAccessToken(authorization)),
         HttpStatus.OK);
