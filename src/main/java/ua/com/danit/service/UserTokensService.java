@@ -72,7 +72,7 @@ public class UserTokensService {
       generateNewSessionToken("Refresh", userTokenResponse);
       generateNewSessionToken("Access", userTokenResponse);
       userTokenDb = userTokenFacade.mapRequestDtoToEntity(userTokenResponse, userTokenDb);
-      userTokenDb = userTokensRepository.save(userTokenDb);
+      userTokenDb = userTokensRepository.saveAndFlush(userTokenDb);
       return userTokenFacade.mapEntityToResponseDto(userTokenDb);
     }
   }

@@ -19,7 +19,9 @@ public interface UsersRepository extends JpaRepository<User, Long> {
           + " WHERE u.userId = ?1")
   void putUserModeration(Long userId, Integer userIsOkUserPhoto, Integer userIsOkCarPhoto);
 
-
-  List<User> findFirstByUserIsOkCarPhotoIsNotOrUserIsOkUserPhotoIsNot(int car, int user);
+  @Query(value = "SELECT * FROM users "
+      + " WHERE COALESCE(user_is_ok_user_photo,0)<> 1"
+      + " or COALESCE(user_is_ok_car_photo,0) <> 1 LIMIT 10", nativeQuery = true)
+  List<User> getUserListForModeration();
 
 }

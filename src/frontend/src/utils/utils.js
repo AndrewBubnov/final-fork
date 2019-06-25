@@ -49,23 +49,23 @@ export const axiosRequest = (method, url, data, headers, config) => {
 //* *********************
 
 export const setLocalStorage = (accessToken, refreshToken) => {
-    const accessTokenExpires = new Date(Date.now() + 880000).toISOString()
+    const accessTokenExpires = new Date(Date.now() + 5000).toISOString()
     const refreshTokenExpires = new Date(Date.now() + 2591900000).toISOString()
     localStorage.setItem('iTripper_access_token', accessToken)
     localStorage.setItem('iTripper_refresh_token', refreshToken)
     localStorage.setItem('iTripper_access_token_expires', accessTokenExpires)
     localStorage.setItem('iTripper_refresh_token_expires', refreshTokenExpires)
-    setTimeout(async () => {
-        const data = {userTokenRefresh: refreshToken}
-        try {
-            const response = await axios.post('/api/usertokens', data)
-            if (response.data) {
-                setLocalStorage(response.data.userTokenAccess, response.data.userTokenRefresh)
-            }
-        } catch (err) {
-            console.log(err)
-        }
-    }, 880000)
+    // setTimeout(async () => {
+    //     const data = {userTokenRefresh: refreshToken}
+    //     try {
+    //         const response = await axios.post('/api/usertokens', data)
+    //         if (response.data) {
+    //             setLocalStorage(response.data.userTokenAccess, response.data.userTokenRefresh)
+    //         }
+    //     } catch (err) {
+    //         console.log(err)
+    //     }
+    // }, 880000)
 }
 
 //* *********************
