@@ -55,13 +55,14 @@ export const setAuthByToken = () => async dispatch => {
                         const res = await callApi('post', '/api/logins/signin', {userToken: response.data.userTokenAccess})
                         dispatch({type: SET_USER, payload: res.data})
                     } catch (error) {
-                        dispatch(errorPopupShow())
+                        dispatch(logOut())
                     }
                 } else {
                     dispatch(logOut())
                 }
             } catch (error) {
-                dispatch(errorPopupShow())
+                // dispatch(errorPopupShow())
+                console.log(error)
             }
         } else {
             try {
