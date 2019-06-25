@@ -9,11 +9,12 @@ const ProtectedRoute = (props) => {
     useEffect(() => {
         if (!props.initialLoad){
             props.checkAuthorizationByToken()
+        } else {
+            props.setInitialLoadToFalse()
         }
         if (props.isAuthenticated){
             localStorage.setItem('iTripper_page', props.path)
         }
-
     }, [props.path])
 
 
