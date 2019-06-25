@@ -16,13 +16,6 @@ const ProtectedRoute = (props) => {
 
     }, [props.path])
 
-    useEffect(() => {
-        if (!props.initialLoad){
-            props.checkAuthorizationByToken()
-        } else
-            props.setInitialLoadToFalse()
-    }, [])
-
 
     const {component: Component, ...rest} = props
     const isAuthenticated = rest.isAuthenticated

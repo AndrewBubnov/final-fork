@@ -140,14 +140,15 @@ class Smart extends Component {
 
 
   editClose = (pointId) => {
+    const { userPoints } = this.props.users.user
     let id = null
     if (pointId) {
       id = pointId
     } else {
-      id = this.props.users.userPoints.length > 0 ?
-        this.props.users.userPoints.find(item => item.userPointName === '<no point>').userPointId : 1
+      id = userPoints.length > 0 ?
+        userPoints.find(item => item.userPointName === '<no point>').userPointId : 1
     }
-    let newUserPoints = this.props.users.userPoints.map(item => {
+    let newUserPoints = userPoints.map(item => {
       if (item.userPointId === id) {
         let pointAddress = this.props.users.searchedLocation || this.state.value
         return {
@@ -176,7 +177,7 @@ class Smart extends Component {
   }
 
   handleDelete = (id) => {
-    let newUserPoints = this.props.users.userPoints.map(item => {
+    let newUserPoints = this.props.users.user.userPoints.map(item => {
       if (item.userPointId === id) {
         return {...item, userPointName: '<no point>', userPointAddress: ''}
       } else {
@@ -226,7 +227,7 @@ class Smart extends Component {
 
   render() {
     const { name, value, editing, adding, creatingTrip } = this.state
-    const { userPoints } = this.props.users
+    const { userPoints } = this.props.users.user
     const firstEmptyUserPoint = userPoints.find(item => item.userPointName === '<no point>')
     let adDisable = userPoints.indexOf(firstEmptyUserPoint) === -1
 

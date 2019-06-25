@@ -16,10 +16,8 @@
     text-decoration: none;
     font-weight: bold;
 }
-.string-date{
-    color: #f57c00;
-}
-.string-time{
-    color: #f57c00;
+.date-time-container{
+    display: flex;
+    justify-content: space-around;
     font-weight: 500;
 }

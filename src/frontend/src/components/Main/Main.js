@@ -8,44 +8,27 @@ import MainRender from "./MainRender/MainRender";
 const Main = (props) => {
 
     const [checkboxArray, setCheckboxArray] = useState(null)
-    const [joinIdArray, setJoinIdArray] = useState(null)
-    const [tripPointNames, setTripPointNames] = useState(false)
     const [tripPointParams, setTripPointParams] = useState(false)
-    const [userArray, setUserArray] = useState(false)
-    const { mainTripParams, joinStatusArray, mainTripPointNames, mainTripUserArray, mainTripId } = props
+
+    const { mainTripParams, joinIdArray, joinStatusArray, mainTripPointNames, mainTripUserArray, mainTripId } = props
 
     useEffect(() => {
-        props.setMainTrips(mainTripId)
+        if (mainTripId){
+            props.setMainTrips(mainTripId)
+        }
+
         return () => props.clearMainTripId()
     }, [mainTripId])
 
     useEffect(() => {
-        if (joinStatusArray){
+        if (mainTripParams){
+            setTripPointParams(true)
             const checkboxArray = props.joinStatusArray.map(item => {
                 return !(item % 2 === 0);
             })
-            setJoinIdArray(props.joinIdArray)
             setCheckboxArray(checkboxArray)
         }
-    }, [joinStatusArray])
-
-    useEffect(() => {
-        if (mainTripPointNames){
-            setTripPointNames(true)
-        }
-    }, [mainTripPointNames])
-
-    useEffect(() => {
-        if (mainTripParams){
-            setTripPointParams(true)
-        }
     }, [mainTripParams])
-
-    useEffect(() => {
-        if (mainTripUserArray){
-            setUserArray(true)
-        }
-    }, [mainTripUserArray])
 
 
     let output = (
@@ -53,7 +36,7 @@ const Main = (props) => {
             <Spinner/>
         </div>
     )
-    if (tripPointParams && joinStatusArray && tripPointNames && userArray) {
+    if (tripPointParams) {
         output = <MainRender
             mainTripPointNames={ mainTripPointNames }
             checkboxArray={ checkboxArray }
@@ -76,6 +59,7 @@ const mapStateToProps = (state) => {
     return {
         mainTripParams: state.trips.mainTripParams,
         joinStatusArray: state.trips.joinStatusArray,
+        joinIdArray: state.trips.joinIdArray,
         mainTripPointNames: state.trips.mainTripPointNames,
         mainTripUserArray: state.trips.mainTripUserArray,
         mainTripId: state.trips.mainTripId,
@@ -92,13 +76,19 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(mapStateToProps, mapDispatchToProps)(Main)
 
 
+
+
+
+
+
+//
 // import React, {Component} from 'react'
 // import {connect} from 'react-redux'
 // import { setMainTrips, clearMainTripId } from "../../actions/tripCreators";
 // import Spinner from "../Spinner/Spinner";
 // import MainRender from "./MainRender/MainRender";
-//
-//
+
+
 //
 //
 // class Main extends Component {
@@ -187,4 +177,4 @@ export default connect(mapStateToProps, mapDispatchToProps)(Main)
 // }
 //
 // export default connect(mapStateToProps, mapDispatchToProps)(Main)
-
+//

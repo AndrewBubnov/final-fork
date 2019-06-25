@@ -18,13 +18,16 @@ const initialState = {
         userName: '',
         userPhone: '',
         userPhoto: '',
+        userPoints: [],
         userCars: [],
+        userRole: '',
+        userIsOkUserPhoto: null,
+        userIsOkCarPhoto: null,
         userTokenAccess: '',
         userTokenAccessTo: '',
         userTokenRefresh: '',
     },
     errorMessage: '',
-    userPoints: [],
     role: 'passenger',
     isAuthenticated: false,
     auth: null,
@@ -39,7 +42,7 @@ function users(state = initialState, action) {
         case SET_USER:
             return {...state, user: {...state.user, ...action.payload}, isAuthenticated: true}
         case SET_USER_POINTS:
-            return {...state, userPoints: action.payload}
+            return {...state, user: {...state.user, userPoints: action.payload}}
         case SET_ROLE:
             return {...state, role: action.payload}
         case SET_SOCIAL_AUTH:

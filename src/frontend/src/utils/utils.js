@@ -56,10 +56,9 @@ export const setLocalStorage = (accessToken, refreshToken) => {
     localStorage.setItem('iTripper_access_token_expires', accessTokenExpires)
     localStorage.setItem('iTripper_refresh_token_expires', refreshTokenExpires)
     setTimeout(async () => {
-        let response
         const data = {userTokenRefresh: refreshToken}
         try {
-            response = await axios.post('/api/usertokens', data)
+            const response = await axios.post('/api/usertokens', data)
             if (response.data) {
                 setLocalStorage(response.data.userTokenAccess, response.data.userTokenRefresh)
             }
