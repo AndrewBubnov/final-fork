@@ -41,8 +41,6 @@ const MainRoute = ({setUserMainTripShown, setCurrentMainTripParams, mainTripPara
                 return 'selected'
             case 3:
                 return 'mutual'
-            case 4:
-                return 'rejected'
             default:
                 return 'unselected'
         }
@@ -109,8 +107,8 @@ const MainRoute = ({setUserMainTripShown, setCurrentMainTripParams, mainTripPara
 
     const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     const date = new Date(mainTrip.tripDateTime)
-    const stringDate = date.getDate() + ' ' + monthNames[date.getMonth()+1] + ' ' + date.getFullYear()
-    const stringTime = date.getHours() + ':' + date.getMinutes()
+    const stringDate = date.getDate() + ' ' + monthNames[date.getMonth() + 1] + ' ' + date.getFullYear()
+    const stringTime = date.getHours() + ' : ' + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes())
 
     return (
         <ExpansionPanel
@@ -130,10 +128,11 @@ const MainRoute = ({setUserMainTripShown, setCurrentMainTripParams, mainTripPara
                 style={style[setTabStyle(index)]}
             >
                 <div>
-                <Typography className={classes.heading}><span className='string-date'>{stringDate}</span>
-                    <span>  </span>
-                    <span className='string-time'>{stringTime}</span></Typography>
-                <Typography className={classes.heading}>{item[0]} - {item[item.length - 1]}</Typography>
+                    <div className='date-time-container'>
+                        <span style={style[setTabStyle(index)]}>{stringDate}</span>
+                        <span style={style[setTabStyle(index)]}>{stringTime}</span>
+                    </div>
+                    <Typography className={classes.heading}>{item[0]} - {item[item.length - 1]}</Typography>
                 </div>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails className={classes.details} style={style[setTabStyle(index)]}>
@@ -153,14 +152,9 @@ const style = {
     selected: {
         backgroundColor: '#F59F49',
         color: '#fff',
-
     },
     mutual: {
         backgroundColor: '#338033',
-        color: '#fff',
-    },
-    rejected: {
-        backgroundColor: '#FA4E4B',
         color: '#fff',
     },
 }

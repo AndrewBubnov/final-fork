@@ -44,7 +44,7 @@ class Car extends Component {
                         <ZoomPhoto
                             src={model.userCarPhoto}
                             subject={'car'}
-                            height={40}
+                            height={50}
                         /> : null}
                     </div>
                 </div>

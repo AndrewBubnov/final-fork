@@ -48,12 +48,12 @@ export const setAuthByToken = () => async dispatch => {
             dispatch(logOut());
         } else if (accessTokenExpires && (Date.now() > Date.parse(accessTokenExpires))) {
             try {
-                const response = await axios.post('/api/usertokens', userTokenRefresh)
+                const response = await axios.post('/api/usertokens', { userTokenRefresh })
                 if (response.data) {
                     setLocalStorage(response.data.userTokenAccess, response.data.userTokenRefresh)
                     try {
                         const res = await callApi('post', '/api/logins/signin', {userToken: response.data.userTokenAccess})
-                        dispatch(authDispatches(res))
+                        dispatch({type: SET_USER, payload: res.data})
                     } catch (error) {
                         dispatch(errorPopupShow())
                     }
@@ -67,19 +67,12 @@ export const setAuthByToken = () => async dispatch => {
             try {
                 const response = await callApi('post', '/api/logins/signin', {userToken})
                 setLocalStorage(response.data.userTokenAccess, response.data.userTokenRefresh)
-                dispatch(authDispatches(response))
+                dispatch({type: SET_USER, payload: response.data})
             } catch (error) {
                 dispatch(errorPopupShow())
             }
         }
     }
-}
-
-// * *********************
-
-const authDispatches = (response) => dispatch => {
-    dispatch({type: SET_USER, payload: response.data})
-    dispatch({type: SET_USER_POINTS, payload: response.data.userPoints})
 }
 
 // * *********************
@@ -102,8 +95,9 @@ export const setAuthorization = (state, signType) => async dispatch => {
     }
     try {
         const response = await axios.post('/api/logins/' + route, data)
+        console.log('response = ', response.data)
         setLocalStorage(response.data.userTokenAccess, response.data.userTokenRefresh)
-        dispatch(authDispatches(response))
+        dispatch({type: SET_USER, payload: response.data})
         dispatch({type: INITIAL_LOAD, payload: true})
     } catch (error) {
         dispatch(setErrorPopupOpen(true))
@@ -195,6 +189,7 @@ export const errorPopupShow = () => dispatch => {
     dispatch(setErrorPopupOpen(true))
     dispatch(setErrorMessage("Sorry, something's gone wrong on server. Please try again."))
 }
+//* **********************
 
 export const restorePassword = (email) => dispatch =>{
     callApi('post', 'api/logins/email', {userLogin: email})
@@ -210,4 +205,11 @@ export const setInitialLoadToFalse = () => dispatch => {
 
 export const clearCurrentCarPhoto = () => dispatch => {
     dispatch({type: SET_CURRENT_CAR_PHOTO, payload: ''})
+}
+//* **********************
+
+export const setPhotosValidation = (data) => dispatch => {
+    callApi('get', 'api/users/moderationlist')
+        .then(res => console.log(res.data))
+        .catch(err => dispatch(errorPopupShow()))
 }

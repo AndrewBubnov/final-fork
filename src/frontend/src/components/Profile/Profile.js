@@ -7,7 +7,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import Photo from './Photo/Photo'
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
 import orange from '@material-ui/core/colors/orange'
-import {updateProfile, setPhoto, confirmEmail, clearCurrentCarPhoto} from '../../actions/userCreators'
+import {updateProfile, setPhoto, confirmEmail, clearCurrentCarPhoto, setPhotosValidation} from '../../actions/userCreators'
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
 import Car from './Car/Car'
 import ConfirmButton from './ConfirmButton/ConfirmButton'
@@ -16,6 +16,8 @@ import carSihlouette from '../../img/carSihlouette.svg'
 import ErrorSnackbar from "./ErrorSnackbar/ErrorSnackbar";
 import AddingCar from "./AddingCar/AddingCar";
 import './Profile.css'
+
+
 
 
 const phoneNumber = /^\+?[0-9]{10}/;
@@ -40,6 +42,26 @@ class Profile extends Component {
             userCarColour: '',
             userCarPhoto: '',
         },
+        userPhotoValid: !!this.props.users.user.userIsOkUserPhoto,
+        carPhotoValid: !!this.props.users.user.userIsOkCarPhoto,
+    }
+
+    handleUserPhotoValid = () => {
+        this.setState({userPhotoValid: !this.state.userPhotoValid})
+    }
+
+    handleCarPhotosValid = () => {
+        this.setState({carPhotoValid: !this.state.carPhotoValid})
+    }
+
+    validatePhotos = () => {
+        const { userPhotoValid, carPhotoValid } = this.state
+        const data = {
+            userId: this.props.users.user.userId,
+            userIsOkUserPhoto: userPhotoValid ? 1 : 0,
+            userIsOkCarPhoto: carPhotoValid ? 1 : 0,
+        }
+        this.props.setPhotosValidation(data)
     }
 
     handleChange = ({target: {name, value}}) => {
@@ -118,7 +140,10 @@ class Profile extends Component {
 
     render() {
         const {classes, users: {user: {userIsConfirmedMail}}} = this.props
-        const {adding, user: {userName, userPhone, userMail, userPhoto, userCars}, newCar: {userCarName, userCarColour}} = this.state
+
+        const {adding, user: {userName, userPhone, userMail, userPhoto, userCars},
+            newCar: {userCarName, userCarColour}, userPhotoValid, carPhotoValid} = this.state
+
         const allChecks = (userPhone && phoneNumber.test(userPhone.split('-').join('')))
             && (userMail && email.test(userMail.toLowerCase()))
             && (userName && userName.length > 0)
@@ -154,7 +179,6 @@ class Profile extends Component {
                 >
                     <Photo
                         setPhoto={this.setPhotoAndProfile}
-                        photo={this.props.users.currentCarPhoto}
                         sihlouette={carSihlouette}
                         error={this.props.users.errorPopupOpen}
                         ratio={18 / 10}
@@ -174,6 +198,14 @@ class Profile extends Component {
                         ratio={3 / 4}
                         subject='user'
                     />
+                    {
+                        this.props.users.user.userRole.includes('admin') &&
+                        <input type="checkbox"
+                            onChange={this.handleUserPhotoValid}
+                            checked={userPhotoValid}
+                            style={{color: '#fff', marginTop: 10, transform: 'scale(1.2)'}}
+                        />
+                    }
                     <MuiThemeProvider theme={theme}>
                         <TextField
                             required
@@ -227,13 +259,31 @@ class Profile extends Component {
                                 endAdornment: adornment,
                             }}
                         />
-                        {userCars.length > 0 &&
+                        {
+                            userCars.length > 0 &&
                         < span className='carlist-header'>List of your cars (swipe to delete)</span>
                         }
+
                         <div className='carlist'>
                             {carList}
                         </div>
-                        {allChecks &&
+
+                        {
+                            this.props.users.user.userRole.includes('admin') &&
+                            <>
+                                <input type="checkbox"
+                                       onChange={this.handleCarPhotosValid}
+                                       checked={carPhotoValid}
+                                       style={{ color: '#fff', marginTop: 10, transform: 'scale(1.2)' }}
+                                />
+                                <button onClick={this.validatePhotos} style={{ marginTop: 10 }}>
+                                    Validate photos
+                                </button>
+                            </>
+                        }
+
+                        {
+                            allChecks &&
                         <Button onClick={this.handleAddCar}
                                 color="primary"
                                 classes={{
@@ -372,6 +422,7 @@ const mapDispatchToProps = (dispatch) => {
         setPhoto: (photo, user, subject) => dispatch(setPhoto(photo, user, subject)),
         confirmEmail: (email) => dispatch(confirmEmail(email)),
         clearCurrentCarPhoto: () => dispatch(clearCurrentCarPhoto()),
+        setPhotosValidation: (data) => dispatch(setPhotosValidation(data)),
     }
 }
 
