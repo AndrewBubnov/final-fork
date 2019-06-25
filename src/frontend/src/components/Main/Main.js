@@ -16,9 +16,11 @@ const Main = (props) => {
         if (mainTripId){
             props.setMainTrips(mainTripId)
         }
-
-        return () => props.clearMainTripId()
     }, [mainTripId])
+
+    useEffect(() => {
+        return () => props.clearMainTripId()
+    }, [])
 
     useEffect(() => {
         if (mainTripParams){
