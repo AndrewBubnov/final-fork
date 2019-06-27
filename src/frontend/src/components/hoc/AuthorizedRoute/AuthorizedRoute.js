@@ -5,14 +5,17 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
 
 
 const AuthorizedRoute = (props) => {
-
-    const {component: Component, userRole, path, ...rest} = props
-    const {userName, userPhone, userMail, userPhoto} = rest.user
-    const user =  userName && userPhone && userMail && userPhoto
+    const {component: Component, status, path, ...rest} = props
+    const {userName, userPhone, userMail, userPhoto, userRole} = rest.user
+    const user =  userName && userPhone && userMail && !!userPhoto
     let isApproved = false
-    if (userRole === 'user') {
+    if (status === 'user') {
         isApproved = user
     }
+    else if (status === 'admin') {
+        isApproved = user && userRole.includes('admin')
+    }
+
     return (
         <Route path={path} {...rest} render={(props) => isApproved ?
             <ProtectedRoute {...props} path={path} component={Component}/>

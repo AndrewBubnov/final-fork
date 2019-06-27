@@ -50,6 +50,16 @@ const Drawer = (props) => {
                     >
                         New Trip
                     </NavLink>
+                    {
+                        props.role.includes('admin') &&
+                        <NavLink to={'/moderate'}
+                                 className='drawer-link-regular'
+                                 activeClassName="drawer-active-link"
+                                 style={{textDecoration: 'none'}}
+                        >
+                            Moderate
+                        </NavLink>
+                    }
                     <NavLink to={'/'}
                              onClick={() => signOut(props.auth, props.logOut)}
                              className='drawer-link-logout'
@@ -72,6 +82,7 @@ const mapStateToProps = (state) => {
     return {
         topMenuOpen: state.users.topMenuOpen,
         auth: state.users.auth,
+        role: state.users.user.userRole,
     }
 }
 

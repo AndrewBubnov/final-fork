@@ -1,7 +1,7 @@
 import { SET_INTERMEDIATE_POINTS, SET_MY_COORDS, SET_SEARCHED_LOCATION, SET_TARGET_COORDS, SET_CURRENT_TRIP_PARAMS,
          SET_TRIP, SET_TRIP_DATE_TIME, ADD_NEW_TRIP, SET_MAIN_TRIP_ID, DELETE_TRIP_FROM_HISTORY,
          SET_START_LOCATION, SET_FINISH_LOCATION, CLEAR_MAP, SET_MY_LOCATION, SET_USER_MAIN_TRIP_SHOWN,
-         SET_TRIP_SUPERPOSITION_PARAMS } from "../actions/trips";
+         SET_TRIP_SUPERPOSITION_PARAMS, SET_MAIN_TRIPS_PARAMS } from "../actions/trips";
 
 
 const initialState = {
@@ -59,6 +59,8 @@ function trips (state = initialState, action) {
             return {...state, myLocation: action.payload}
         case SET_USER_MAIN_TRIP_SHOWN:
             return {...state, userMainTripShown: action.payload}
+        case SET_MAIN_TRIPS_PARAMS:
+            return {...state, mainTripParams: action.payload}
         case SET_TRIP_SUPERPOSITION_PARAMS:
             return {...state,
                 joinIdArray: action.payload.idArray,
