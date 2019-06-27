@@ -1,0 +1,12 @@
+.moderation-card{
+    width: 98%;
+    background-color: #E8E8E8;
+    padding: 5px;
+    margin-bottom: 30px;
+    border-radius: 5px;
+}
+.moderation-photo-column{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

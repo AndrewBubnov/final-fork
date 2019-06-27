@@ -1,13 +1,13 @@
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
-import {withStyles} from '@material-ui/core/styles'
+import React, { Component } from 'react'
+import { connect} from 'react-redux'
+import { withStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Photo from './Photo/Photo'
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
 import orange from '@material-ui/core/colors/orange'
-import {updateProfile, setPhoto, confirmEmail, clearCurrentCarPhoto, setPhotosValidation} from '../../actions/userCreators'
+import { updateProfile, setPhoto, confirmEmail, clearCurrentCarPhoto } from '../../actions/userCreators'
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
 import Car from './Car/Car'
 import ConfirmButton from './ConfirmButton/ConfirmButton'
@@ -42,27 +42,8 @@ class Profile extends Component {
             userCarColour: '',
             userCarPhoto: '',
         },
-        userPhotoValid: !!this.props.users.user.userIsOkUserPhoto,
-        carPhotoValid: !!this.props.users.user.userIsOkCarPhoto,
     }
 
-    handleUserPhotoValid = () => {
-        this.setState({userPhotoValid: !this.state.userPhotoValid})
-    }
-
-    handleCarPhotosValid = () => {
-        this.setState({carPhotoValid: !this.state.carPhotoValid})
-    }
-
-    validatePhotos = () => {
-        const { userPhotoValid, carPhotoValid } = this.state
-        const data = {
-            userId: this.props.users.user.userId,
-            userIsOkUserPhoto: userPhotoValid ? 1 : 0,
-            userIsOkCarPhoto: carPhotoValid ? 1 : 0,
-        }
-        this.props.setPhotosValidation(data)
-    }
 
     handleChange = ({target: {name, value}}) => {
         this.setState({user: {...this.state.user, [name]: value}, newCar: {...this.state.newCar, [name]: value}})
@@ -141,8 +122,8 @@ class Profile extends Component {
     render() {
         const {classes, users: {user: {userIsConfirmedMail}}} = this.props
 
-        const {adding, user: {userName, userPhone, userMail, userPhoto, userCars},
-            newCar: {userCarName, userCarColour}, userPhotoValid, carPhotoValid} = this.state
+        const { adding, user: {userName, userPhone, userMail, userPhoto, userCars},
+            newCar: {userCarName, userCarColour} } = this.state
 
         const allChecks = (userPhone && phoneNumber.test(userPhone.split('-').join('')))
             && (userMail && email.test(userMail.toLowerCase()))
@@ -198,14 +179,6 @@ class Profile extends Component {
                         ratio={3 / 4}
                         subject='user'
                     />
-                    {
-                        this.props.users.user.userRole.includes('admin') &&
-                        <input type="checkbox"
-                            onChange={this.handleUserPhotoValid}
-                            checked={userPhotoValid}
-                            style={{color: '#fff', marginTop: 10, transform: 'scale(1.2)'}}
-                        />
-                    }
                     <MuiThemeProvider theme={theme}>
                         <TextField
                             required
@@ -267,20 +240,6 @@ class Profile extends Component {
                         <div className='carlist'>
                             {carList}
                         </div>
-
-                        {
-                            this.props.users.user.userRole.includes('admin') &&
-                            <>
-                                <input type="checkbox"
-                                       onChange={this.handleCarPhotosValid}
-                                       checked={carPhotoValid}
-                                       style={{ color: '#fff', marginTop: 10, transform: 'scale(1.2)' }}
-                                />
-                                <button onClick={this.validatePhotos} style={{ marginTop: 10 }}>
-                                    Validate photos
-                                </button>
-                            </>
-                        }
 
                         {
                             allChecks &&
@@ -422,7 +381,6 @@ const mapDispatchToProps = (dispatch) => {
         setPhoto: (photo, user, subject) => dispatch(setPhoto(photo, user, subject)),
         confirmEmail: (email) => dispatch(confirmEmail(email)),
         clearCurrentCarPhoto: () => dispatch(clearCurrentCarPhoto()),
-        setPhotosValidation: (data) => dispatch(setPhotosValidation(data)),
     }
 }
 

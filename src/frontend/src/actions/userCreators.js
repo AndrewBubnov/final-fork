@@ -1,6 +1,6 @@
 import {
     SET_USER, SET_USER_POINTS, SET_SOCIAL_AUTH, MENU_TOGGLE,
-    ERROR_POPUP_OPEN, SET_ERROR_MESSAGE,
+    ERROR_POPUP_OPEN, SET_ERROR_MESSAGE, SET_USER_MODERATION_ARRAY,
     USER_LOGOUT, INITIAL_LOAD, SET_USER_PHOTO, SET_CURRENT_CAR_PHOTO
 } from './users'
 
@@ -28,7 +28,8 @@ export const checkAuthorizationByToken = () => async dispatch => {
                     dispatch(logOut())
                 }
             } catch (err) {
-                dispatch(errorPopupShow())
+                // dispatch(errorPopupShow())
+                console.log(err)
             }
         }
     } else {
@@ -209,8 +210,13 @@ export const clearCurrentCarPhoto = () => dispatch => {
 }
 //* **********************
 
-export const setPhotosValidation = (data) => dispatch => {
-    callApi('get', 'api/users/moderationlist')
-        .then(res => console.log(res.data))
-        .catch(err => dispatch(errorPopupShow()))
+export const setUserModerationArray = () => async dispatch => {
+    try {
+        const response = await callApi('get', 'api/users/moderationlist')
+        const moderationArray = response.data.filter(item => item.userPhoto && item)
+        console.log(moderationArray)
+        dispatch({type: SET_USER_MODERATION_ARRAY, payload: moderationArray})
+    } catch (error){
+        console.log(error)
+    }
 }

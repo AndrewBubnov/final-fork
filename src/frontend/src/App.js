@@ -13,10 +13,11 @@ import ChangePassword from './components/ChangePassword/ChangePassword'
 import TripsHistoryForm from "./components/TripsHistory/TripsHistoryForm";
 import NewTrip from './components/NewTrip/NewTrip'
 import Button from './components/FeedbackForms'
-
+import Moderate from "./components/Moderate/Moderate";
 import Main from "./components/Main/Main";
 import Popup from './components/Popup/Popup'
 import './App.css'
+
 
 
 
@@ -31,10 +32,11 @@ class App extends Component {
                     <Switch>
                         <Route exact path='/' render={(props) => <Login {...props}/>}/>
                         <ProtectedRoute path="/profile" component={Profile}/>
-                        <AuthorizedRoute userRole='user' path="/main" component={Main}/>
-                        <AuthorizedRoute userRole='user' path="/smart" component={Smart}/>
-                        <AuthorizedRoute userRole='user' path='/mytrips' component={TripsHistoryForm}/>
-                        <AuthorizedRoute userRole='user' path='/newtrip' component={NewTrip}/>
+                        <AuthorizedRoute status='user' path="/main" component={Main}/>
+                        <AuthorizedRoute status='user' path="/smart" component={Smart}/>
+                        <AuthorizedRoute status='user' path='/mytrips' component={TripsHistoryForm}/>
+                        <AuthorizedRoute status='user' path='/newtrip' component={NewTrip}/>
+                        <AuthorizedRoute status='admin' path='/moderate' component={Moderate}/>
                         <Route path="/restore_password" render={props => <PassRestoration {...props} />}/>
                         <Route path="/change_password" render={props => <ChangePassword {...props} />}/>
                         <Route exact path="/feedback" component={Button} />
