@@ -51,7 +51,7 @@ const Drawer = (props) => {
                         New Trip
                     </NavLink>
                     {
-                        props.role.includes('admin') &&
+                        props.role && props.role.includes('admin') &&
                         <NavLink to={'/moderate'}
                                  className='drawer-link-regular'
                                  activeClassName="drawer-active-link"

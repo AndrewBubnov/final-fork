@@ -1,7 +1,7 @@
 import React from 'react'
 import ModerateSingle from './ModerateSingle/ModerateSingle'
 
-const ModerateRender = ({checkboxArray, moderated, handleCheckbox}) => {
+const ModerateRender = ({ checkboxArray, moderated, handleCheckbox, handleSubmit }) => {
     return (
         moderated.map((item, index) => {
             return (
@@ -11,6 +11,7 @@ const ModerateRender = ({checkboxArray, moderated, handleCheckbox}) => {
                     index={index}
                     checked={checkboxArray[index]}
                     handleCheckbox={handleCheckbox}
+                    handleSubmit={handleSubmit}
                 />
             )
         })

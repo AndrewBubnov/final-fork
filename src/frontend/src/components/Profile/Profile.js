@@ -122,8 +122,7 @@ class Profile extends Component {
     render() {
         const {classes, users: {user: {userIsConfirmedMail}}} = this.props
 
-        const { adding, user: {userName, userPhone, userMail, userPhoto, userCars},
-            newCar: {userCarName, userCarColour} } = this.state
+        const { adding, user: {userName, userPhone, userMail, userPhoto, userCars}, newCar: {userCarName, userCarColour} } = this.state
 
         const allChecks = (userPhone && phoneNumber.test(userPhone.split('-').join('')))
             && (userMail && email.test(userMail.toLowerCase()))
@@ -160,6 +159,7 @@ class Profile extends Component {
                 >
                     <Photo
                         setPhoto={this.setPhotoAndProfile}
+                        photo={this.props.users.currentCarPhoto}
                         sihlouette={carSihlouette}
                         error={this.props.users.errorPopupOpen}
                         ratio={18 / 10}
