@@ -2,15 +2,18 @@ import React from 'react'
 import ZoomPhoto from "../../../ZoomPhoto/ZoomPhoto";
 import './ModerateSingle.css'
 
-const ModerateSingle = ({handleCheckbox, index, item, checked}) => {
+const ModerateSingle = ({ handleCheckbox, index, item, checked, handleSubmit }) => {
+
     const carList = item.userCars.map(element => {
         return (
-            <ZoomPhoto
-                key={element.userCarId}
-                src={element.userCarPhoto}
-                subject={'car'}
-                height={100}
-            />
+            <div key={element.userCarId}>
+                <div>{element.userCarName} {element.userCarColour}</div>
+                <ZoomPhoto
+                    src={element.userCarPhoto}
+                    subject={'car'}
+                    height={100}
+                />
+            </div>
         )
     })
 
@@ -23,6 +26,7 @@ const ModerateSingle = ({handleCheckbox, index, item, checked}) => {
                 width: '100%'
             }}>
                 <div className='moderation-photo-column'>
+                    <div>{item.userMail}</div>
                     <ZoomPhoto
                         src={item.userPhoto}
                         subject={'user'}
@@ -31,7 +35,10 @@ const ModerateSingle = ({handleCheckbox, index, item, checked}) => {
                     <input type='checkbox'
                            checked={checked[0]}
                            onChange={(e) => handleCheckbox(e, index, 0)}
-                           style={{marginTop: 5}}
+                           style={{
+                               marginBottom: carList.length > 0 ? 0 : 'auto',
+                               marginTop: carList.length > 0 ? 'auto' : 5
+                           }}
                     />
                 </div>
                 <div className='moderation-photo-column'>
@@ -46,6 +53,12 @@ const ModerateSingle = ({handleCheckbox, index, item, checked}) => {
                     }
                 </div>
             </div>
+            <button
+                onClick={() => handleSubmit(index)}
+                className='moderation-submit'
+            >
+                Submit
+            </button>
         </div>
     )
 }

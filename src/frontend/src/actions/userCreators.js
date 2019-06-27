@@ -214,9 +214,16 @@ export const setUserModerationArray = () => async dispatch => {
     try {
         const response = await callApi('get', 'api/users/moderationlist')
         const moderationArray = response.data.filter(item => item.userPhoto && item)
-        console.log(moderationArray)
         dispatch({type: SET_USER_MODERATION_ARRAY, payload: moderationArray})
     } catch (error){
         console.log(error)
     }
+}
+//* **********************
+
+export const moderatePhotos = (data) => (dispatch, getState) => {
+    const newModerationArray = getState().users.moderated.filter(item => item.userId !== data.userId + '')
+    dispatch({type: SET_USER_MODERATION_ARRAY, payload: newModerationArray})
+    callApi('put', 'api/users/moderation', data)
+        .catch(err => console.log(err))
 }
