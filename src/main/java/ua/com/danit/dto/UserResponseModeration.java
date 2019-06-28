@@ -16,7 +16,5 @@ public class UserResponseModeration {
   private Integer userIsOkCarPhoto;
   private Integer userIsConfirmedMail;
   private Integer userIsConfirmedPhone;
-  private String userTokenRefresh;
-  private String userTokenAccess;
   private List<UserCarResponse> userCars;
 }
