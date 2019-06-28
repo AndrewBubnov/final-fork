@@ -36,7 +36,6 @@ public class ApplicationBeans {
     return new ModelMapper();
   }
 
-
   //AWS S3 config
   @Value("${aws.s3.credentials.path}")
   private String s3CredentialsPath;
