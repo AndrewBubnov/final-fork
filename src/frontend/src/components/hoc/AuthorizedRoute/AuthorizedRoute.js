@@ -6,11 +6,14 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
 
 const AuthorizedRoute = (props) => {
     const {component: Component, status, path, ...rest} = props
-    const {userName, userPhone, userMail, userPhoto, userRole} = rest.user
+    const {userName, userPhone, userMail, userPhoto, userRole, userIsOkUserPhoto, userIsOkCarPhoto} = rest.user
     const user =  userName && userPhone && userMail && !!userPhoto
     let isApproved = false
     if (status === 'user') {
         isApproved = user
+    }
+    else if (status === 'moderated') {
+        isApproved = user && userIsOkUserPhoto && userIsOkCarPhoto
     }
     else if (status === 'admin') {
         isApproved = user && userRole.includes('admin')
@@ -22,7 +25,6 @@ const AuthorizedRoute = (props) => {
             : <Redirect to='/profile'/>}
         />
     )
-
 }
 
 const mapStateToProps = (state) => {
