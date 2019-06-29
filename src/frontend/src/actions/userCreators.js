@@ -187,9 +187,10 @@ export const confirmEmail = (email) => dispatch => {
 }
 //* **********************
 
-export const errorPopupShow = () => dispatch => {
+export const errorPopupShow = (errorMessage) => dispatch => {
+    if (!errorMessage) errorMessage = "Sorry, something's gone wrong on server. Please try again."
     dispatch(setErrorPopupOpen(true))
-    dispatch(setErrorMessage("Sorry, something's gone wrong on server. Please try again."))
+    dispatch(setErrorMessage(errorMessage))
 }
 //* **********************
 
