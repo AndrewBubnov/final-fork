@@ -1,7 +1,8 @@
-import React, {Component} from 'react';
-import {withStyles} from '@material-ui/core/styles';
-import {connect} from 'react-redux';
-import {setTargetCoordinates, setMyCoordinates, setClearMap, setTrip, setEndLocation} from '../../actions/tripCreators';
+import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
+import { setTargetCoordinates, setMyCoordinates, setClearMap, setTrip, setEndLocation } from '../../actions/tripCreators';
+import { errorPopupShow } from '../../actions/userCreators';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
@@ -137,39 +138,45 @@ class NewTrip extends Component {
 
 
     submitRoute = () => {
-        const startPoint = {
-            tripPointName: this.state.valueFrom,
-            tripPointLatitude: this.props.trips.myCoordinates.latitude,
-            tripPointLongitude: this.props.trips.myCoordinates.longitude,
-            tripPointSequence: 0,
+        if (this.props.userIsOkUserPhoto && this.props.userIsOkCarPhoto) {
+            const startPoint = {
+                tripPointName: this.state.valueFrom,
+                tripPointLatitude: this.props.trips.myCoordinates.latitude,
+                tripPointLongitude: this.props.trips.myCoordinates.longitude,
+                tripPointSequence: 0,
+            }
+            const endPoint = {
+                tripPointName: this.state.valueTo,
+                tripPointLatitude: this.props.trips.targetCoordinates.latitude,
+                tripPointLongitude: this.props.trips.targetCoordinates.longitude,
+                tripPointSequence: 0,
+            }
+            this.getIntermediate()
+                .then(res => {
+                    let tripPoint = []
+                    tripPoint.push(startPoint)
+                    tripPoint = tripPoint.concat(res)
+                    endPoint.tripPointSequence = tripPoint.length
+                    tripPoint.push(endPoint)
+                    let currentCar = this.props.userCars.length === 1 ? this.props.userCars[0] : this.state.car
+                    const userCarId = this.state.role === 'driver' ? currentCar.userCarId : null
+                    let result = this.setTimeWithTimezoneOffset(this.state.tripTime)
+                    let trip = {
+                        userCar: {
+                            userCarId,
+                        },
+                        tripPoint,
+                        tripDateTime: result,
+                    }
+                    this.props.setTrip(trip)
+                })
+
+            this.props.history.push({pathname: '/main'})
+        } else {
+            this.props.errorPopupShow(`Unfortunately the photos you provided have not yet been moderated. You can not
+            register routes and look through other user routes so far. Please contact service team.`)
         }
-        const endPoint = {
-            tripPointName: this.state.valueTo,
-            tripPointLatitude: this.props.trips.targetCoordinates.latitude,
-            tripPointLongitude: this.props.trips.targetCoordinates.longitude,
-            tripPointSequence: 0,
-        }
-        this.getIntermediate()
-            .then(res => {
-                let tripPoint = []
-                tripPoint.push(startPoint)
-                tripPoint = tripPoint.concat(res)
-                endPoint.tripPointSequence = tripPoint.length
-                tripPoint.push(endPoint)
-                let currentCar = this.props.userCars.length === 1 ? this.props.userCars[0] : this.state.car
-                const userCarId = this.state.role === 'driver' ? currentCar.userCarId : null
-                let result = this.setTimeWithTimezoneOffset(this.state.tripTime)
-                let trip = {
-                    userCar: {
-                        userCarId,
-                    },
-                    tripPoint,
-                    tripDateTime: result,
-                }
-                this.props.setTrip(trip)
-            })
         this.rejectRoute()
-        this.props.history.push({pathname: '/main'})
     }
 
     setTripTime = (time) =>{
@@ -323,6 +330,8 @@ class NewTrip extends Component {
 const mapStateToProps = state => {
     return {
         userCars: state.users.user.userCars,
+        userIsOkUserPhoto: state.users.user.userIsOkUserPhoto,
+        userIsOkCarPhoto: state.users.user.userIsOkCarPhoto,
         trips: state.trips,
     }
 }
@@ -334,6 +343,7 @@ const mapDispatchToProps = dispatch => {
         setClearMap: (value) => dispatch(setClearMap(value)),
         setTrip: (trip) => dispatch(setTrip(trip)),
         setEndLocation: (location, end) => dispatch(setEndLocation(location, end)),
+        errorPopupShow: (errorMessage) => dispatch(errorPopupShow(errorMessage)),
     }
 }
 
