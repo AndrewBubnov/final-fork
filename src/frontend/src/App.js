@@ -32,7 +32,7 @@ class App extends Component {
                     <Switch>
                         <Route exact path='/' render={(props) => <Login {...props}/>}/>
                         <ProtectedRoute path="/profile" component={Profile}/>
-                        <AuthorizedRoute status='user' path="/main" component={Main}/>
+                        <AuthorizedRoute status='moderated' path="/main" component={Main}/>
                         <AuthorizedRoute status='user' path="/smart" component={Smart}/>
                         <AuthorizedRoute status='user' path='/mytrips' component={TripsHistoryForm}/>
                         <AuthorizedRoute status='user' path='/newtrip' component={NewTrip}/>
