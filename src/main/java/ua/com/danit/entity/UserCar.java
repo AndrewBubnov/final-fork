@@ -32,7 +32,7 @@ public class UserCar extends Auditable {
   @JoinColumn(name = "USER_CAR_USER_ID", referencedColumnName = "userId")
   private User user;
   private Integer userCarIsDeleted;
-  private int tripSitsQty;
+  private int userCarSitsQty;
 
   @Override
   public boolean equals(Object obj) {
