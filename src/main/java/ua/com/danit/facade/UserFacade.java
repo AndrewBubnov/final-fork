@@ -8,6 +8,7 @@ import ua.com.danit.dto.UserResponse;
 import ua.com.danit.entity.User;
 import ua.com.danit.entity.UserCar;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -47,9 +48,11 @@ public class UserFacade extends AbstractDtoFacade<User, UserResponseTrip, UserRe
   }
 
   private List<UserCar> removeDeletedCars(List<UserCar> userCars) {
-    for (UserCar userCar : userCars) {
-      if (userCar.getUserCarIsDeleted() != null && userCar.getUserCarIsDeleted() == 1) {
-        userCars.remove(userCar);
+    Iterator<UserCar> iterator = userCars.iterator();
+    while (iterator.hasNext()) {
+      UserCar car = iterator.next();
+      if (car.getUserCarIsDeleted() != null && car.getUserCarIsDeleted() == 1) {
+        iterator.remove();
       }
     }
     return userCars;
