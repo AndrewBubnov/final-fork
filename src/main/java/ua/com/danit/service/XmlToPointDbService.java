@@ -40,14 +40,14 @@ public class XmlToPointDbService extends Thread {
 
   @Override
   public void run() {
-    System.out.println("Map Points export from XML to DB start.");
+    System.out.println("Map Points export has started from XML to DB.");
     String xmlFileName = env.getProperty("application.map.xmlsource");
     String xmlFileReadRowsQty = env.getProperty("application.map.xmlsourcesavetodbqty");
     if (pointsRepository.count() < 10) {
       loadXmlFile(xmlFileName, xmlFileReadRowsQty);
-      System.out.println("Map Points export from XML to DB is finished.");
+      System.out.println("Map Points export has finished from XML to DB start.");
     } else {
-      System.out.println("Map Points already available in DB!");
+      System.out.println("Map Points are already available in DB!");
     }
   }
 
