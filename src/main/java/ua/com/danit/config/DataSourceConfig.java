@@ -54,7 +54,7 @@ public class DataSourceConfig {
 
   private Properties getPropertyFromFile(String filePathName) {
     Properties prop = new Properties();
-    try (InputStream input = this.getClass().getResourceAsStream(filePathName)) {
+    try (InputStream input = new FileInputStream(filePathName)) {
       prop.load(input);
     } catch (IOException ex) {
       ex.printStackTrace();
