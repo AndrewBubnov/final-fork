@@ -1,7 +1,7 @@
 import {
     SET_USER, SET_USER_POINTS, SET_SOCIAL_AUTH, MENU_TOGGLE,
     ERROR_POPUP_OPEN, SET_ERROR_MESSAGE, SET_USER_MODERATION_ARRAY,
-    USER_LOGOUT, INITIAL_LOAD, SET_USER_PHOTO, SET_CURRENT_CAR_PHOTO
+    USER_LOGOUT, INITIAL_LOAD, SET_USER_PHOTO, SET_CURRENT_CAR_PHOTO, SET_PREVIOUS_ROUTE
 } from './users'
 
 import {callApi, setLocalStorage, removeTokens} from '../utils/utils'
@@ -227,4 +227,9 @@ export const moderatePhotos = (data) => (dispatch, getState) => {
     dispatch({type: SET_USER_MODERATION_ARRAY, payload: newModerationArray})
     callApi('put', 'api/users/moderation', data)
         .catch(err => console.log(err))
+}
+//* **********************
+
+export const setPreviousRoute = (route) => dispatch => {
+    dispatch({type: SET_PREVIOUS_ROUTE, payload: route})
 }

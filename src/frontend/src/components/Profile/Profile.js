@@ -41,12 +41,17 @@ class Profile extends Component {
             userCarName: '',
             userCarColour: '',
             userCarPhoto: '',
+            userCarSitsQty: 0,
         },
     }
 
 
     handleChange = ({target: {name, value}}) => {
         this.setState({user: {...this.state.user, [name]: value}, newCar: {...this.state.newCar, [name]: value}})
+    }
+
+    handleCapacity = (capacity) => {
+        this.setState({newCar: {...this.state.newCar, userCarSitsQty: capacity}})
     }
 
 
@@ -122,7 +127,8 @@ class Profile extends Component {
     render() {
         const {classes, users: {user: {userIsConfirmedMail}}} = this.props
 
-        const { adding, user: {userName, userPhone, userMail, userPhoto, userCars}, newCar: {userCarName, userCarColour} } = this.state
+        const { adding, user: {userName, userPhone, userMail, userPhoto, userCars},
+            newCar: {userCarName, userCarColour, userCarSitsQty} } = this.state
 
         const allChecks = (userPhone && phoneNumber.test(userPhone.split('-').join('')))
             && (userMail && email.test(userMail.toLowerCase()))
@@ -156,6 +162,8 @@ class Profile extends Component {
                     handleChange={this.handleChange}
                     submitNewCar={this.submitNewCar}
                     rejectNewCar={this.rejectNewCar}
+                    setSeatCapacity={this.handleCapacity}
+                    userCarSitsQty={userCarSitsQty}
                 >
                     <Photo
                         setPhoto={this.setPhotoAndProfile}

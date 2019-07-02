@@ -18,6 +18,7 @@ import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import orange from "@material-ui/core/colors/orange";
+import CapacitySelect from "../CapacitySelect/CapacitySelect";
 import './NewTrip.css';
 
 const windowWidth = window.innerWidth <= 380 ? window.innerWidth : 380
@@ -72,7 +73,9 @@ const styles = theme => ({
     },
     inputColor: {
         color: '#fff',
-        width: '100%'
+    },
+    formControl: {
+        width: 200,
     },
 })
 
@@ -80,6 +83,7 @@ const style = {
     radio: {
         display: 'flex',
         justifyContent: 'center',
+        height: 60,
         marginTop: 15,
     },
 }
@@ -99,9 +103,13 @@ class NewTrip extends Component {
         valueTo: this.props.trips.finishLocation,
         car: '',
         role: 'passenger',
-        tripTime: new Date().toISOString()
+        tripTime: new Date().toISOString(),
+        userCarSitsQty: 0,
     }
 
+    handleCapacity = (userCarSitsQty) => {
+        this.setState({ userCarSitsQty })
+    }
 
     handleRadio = event => {
         this.setState({role: event.target.value})
@@ -167,6 +175,7 @@ class NewTrip extends Component {
                         },
                         tripPoint,
                         tripDateTime: result,
+                        userCarSitsQty: this.state.userCarSitsQty,
                     }
                     this.props.setTrip(trip)
                 })
@@ -191,13 +200,21 @@ class NewTrip extends Component {
     }
 
     rejectRoute = () => {
+        this.clearRoute()
+        const previousRoute = this.props.previousRoute
+        if (previousRoute[previousRoute.length - 2] === '/smart' || previousRoute[previousRoute.length - 2] === '/mytrips') {
+            this.props.history.push({pathname: previousRoute[previousRoute.length - 2]})
+        }
+
+    }
+
+    clearRoute = () => {
         this.setState({valueFrom: '', valueTo: ''})
         this.props.setClearMap(true)
         this.props.setEndLocation('', 'start');
         this.props.setEndLocation('', 'end');
         this.props.setTargetCoordinates(null);
         this.props.setMyCoordinates(null);
-
     }
 
     componentDidUpdate(prevProps) {
@@ -221,13 +238,14 @@ class NewTrip extends Component {
         const { smart } = this.props.location
         const { role, car, valueFrom, valueTo, tripTime } = this.state
         let currentCar = this.props.userCars.length === 1 ? this.props.userCars[0] : car
+console.log('currentCar.userCarSitsQty = ', currentCar.userCarSitsQty)
         const carList = this.props.userCars.map((item) => {
             return <MenuItem value={item} key={item.userCarId}>{item.userCarName + ' ' + item.userCarColour}</MenuItem>
         })
         return (
             <div className='trip-container'>
                 <LocationDrawer/>
-                <div className='new-trip' style={{marginTop: 60}}>
+                <div className='new-trip'>
                     <span>creating new trip</span>
                     <ForDateTimePickers setTripTime={this.setTripTime} tripTime={tripTime}/>
                     <MuiThemeProvider theme={theme}>
@@ -238,7 +256,6 @@ class NewTrip extends Component {
                             onChange={this.handleRadio}
                             row
                             style={style.radio}
-
                         >
                             <FormControlLabel
                                 value="passenger"
@@ -282,22 +299,30 @@ class NewTrip extends Component {
                         smart={smart}
                     />
                     {this.state.role === 'driver' &&
-                    <FormControl className={classes.formControl}>
-                        <InputLabel style={{color: '#fff'}}>{currentCar.length === 0 ? 'Your car*' : ''}</InputLabel>
-                        <Select
-                            value={currentCar}
-                            onChange={this.handleInput}
-                            name="car"
-                            inputProps={{
-                                classes: {
-                                    root: classes.inputColor
-                                }
-                            }}
-                            className={classes.selectEmpty}
-                        >
-                            {carList}
-                        </Select>
-                    </FormControl>
+                    <div className='driver-container'>
+                        <FormControl >
+                            <InputLabel
+                                style={{color: '#fff'}}>{currentCar.length === 0 ? 'Your car*' : ''}</InputLabel>
+                            <Select
+                                value={currentCar}
+                                onChange={this.handleInput}
+                                name="car"
+                                inputProps={{
+                                    classes: {
+                                        root: classes.inputColor
+                                    }
+                                }}
+                                className={classes.selectEmpty}
+                                style={{width: 260}}
+                            >
+                                {carList}
+                            </Select>
+                        </FormControl>
+                        <CapacitySelect
+                            maxCount={currentCar.userCarSitsQty}
+                            setSeatCapacity={this.handleCapacity}
+                        />
+                    </div>
                     }
 
                     <div className="trip-btn-container">
@@ -332,6 +357,7 @@ const mapStateToProps = state => {
         userCars: state.users.user.userCars,
         userIsOkUserPhoto: state.users.user.userIsOkUserPhoto,
         userIsOkCarPhoto: state.users.user.userIsOkCarPhoto,
+        previousRoute: state.users.previousRoute,
         trips: state.trips,
     }
 }

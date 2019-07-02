@@ -5,10 +5,13 @@
     color: #fff;
     font-size: 18px;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     position: fixed;
     z-index: 20;
     top: 0;
     left: 0;
+}
+.arrow-back{
+    margin-left: 7px;
 }

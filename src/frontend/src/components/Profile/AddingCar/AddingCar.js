@@ -7,8 +7,10 @@ import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import orange from "@material-ui/core/colors/orange";
 import Zoom from '@material-ui/core/Zoom'
+import CapacitySelect from "../../CapacitySelect/CapacitySelect";
 
-const AddingCar = ({ userCarName, userCarColour, handleChange, submitNewCar, rejectNewCar, classes, ...props }) => {
+const AddingCar = ({ userCarName, userCarColour, handleChange, submitNewCar, rejectNewCar, classes,
+                       setSeatCapacity, userCarSitsQty, ...props }) => {
     return(
         <MuiThemeProvider theme={theme}>
             < span className='carlist-header'>Your new car is:</span>
@@ -35,10 +37,14 @@ const AddingCar = ({ userCarName, userCarColour, handleChange, submitNewCar, rej
                 name='userCarColour'
                 value={ userCarColour }
                 onChange={handleChange}
-
+            />
+            <CapacitySelect
+            maxCount={10}
+            setSeatCapacity={setSeatCapacity}
             />
             {props.children}
-            <Zoom direction="down" in={userCarName.length !== 0 && userCarColour.length !== 0 && props.children.props.photo.length !== 0} >
+            <Zoom direction="down" in={userCarName.length !== 0 && userCarColour.length !== 0 &&
+            userCarSitsQty > 0 && props.children.props.photo.length !== 0} >
             <div className='newcar-buttons-container'>
                 <Button
                     onClick={ submitNewCar }
