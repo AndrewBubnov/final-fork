@@ -28,8 +28,8 @@ application:
 #    save: AwsS3Db0
 #    save: LocalDb
   credentials:
-    dev-awsdb:  src/main/resources/credentials/aws/dev-awsdb.properties
-    prod-awsdb: src/main/resources/credentials/aws/db-prod.properties
+    dev-awsdb:  /credentials/aws/dev-awsdb.properties
+    prod-awsdb: /credentials/aws/db-prod.properties
 
 ---
 
@@ -40,9 +40,6 @@ spring:
     console:
       enabled: true
       path: /console
-
-server:
-  port: 9000
 
 aws:
   s3:
@@ -67,13 +64,10 @@ spring:
           use_jdbc_metadata_defaults: false
     database-platform: org.hibernate.dialect.PostgreSQL95Dialect
 
-server:
-  port: 9000
-
 aws:
   s3:
     credentials:
-      path: src/main/resources/credentials/aws/credentials.properties
+      path: /credentials/aws/credentials.properties
       endpointUrl: https://s3.eu-central-1.amazonaws.com
       bucketName: imagestoredev/users
       imageExtension: .png
