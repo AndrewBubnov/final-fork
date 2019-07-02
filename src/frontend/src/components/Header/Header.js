@@ -1,25 +1,39 @@
-import React, {Component} from 'react'
+import React from 'react'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import Drawer from './Drawer/Drawer'
 import DrawerButton from './DrawerButton/DrawerButton'
+import ArrowBack from '@material-ui/icons/ArrowBack';
 import './Header.css'
-import {connect} from 'react-redux'
 
-class Header extends Component {
-  render () {
-      let greeting = this.props.users.user.userName ? this.props.users.user.userName : 'friend'
+
+const Header = ({ previousRoute, userName, history }) => {
+    const handleBack = () => {
+        if (previousRoute[previousRoute.length - 2] !== '/') {
+            history.push({pathname: previousRoute[previousRoute.length - 2]})
+        }
+    }
+
+    let greeting = userName ? userName : 'friend'
     return (
-        <div className="header"> Welcome, {greeting}
-        <DrawerButton/>
-        <Drawer/>
-      </div>
+        <div className="header">
+            <div className='arrow-back'>
+                <ArrowBack
+                    onClick={handleBack}
+                />
+            </div>
+            Welcome, {greeting}
+            <DrawerButton/>
+            <Drawer/>
+        </div>
     )
-  }
 }
 
 const mapStateToProps = (state) => {
-  return {
-    users: state.users
-  }
+    return {
+        userName: state.users.user.userName,
+        previousRoute: state.users.previousRoute,
+    }
 }
 
-export default connect(mapStateToProps, null)(Header)
+export default withRouter(connect(mapStateToProps, null)(Header))

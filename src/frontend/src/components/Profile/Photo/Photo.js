@@ -53,7 +53,10 @@ const Photo = ({ classes, setPhoto, photo, sihlouette, error, onFocus, ratio, su
     }, [photo])
 
     useEffect(() => {
-        if (error) setSpinnerAbleShow(false)
+        if (error) {
+            setSpinnerAbleShow(false)
+            avatarShowToggle(true, false)
+        }
     }, [error])
 
     const avatarShowToggle = (avatarShown, uploadingOpen) => {

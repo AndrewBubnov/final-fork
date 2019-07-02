@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react'
 import {connect} from 'react-redux'
 import {Route, Redirect} from 'react-router-dom'
-import { checkAuthorizationByToken, setInitialLoadToFalse } from "../../../actions/userCreators";
+import { checkAuthorizationByToken, setInitialLoadToFalse, setPreviousRoute } from "../../../actions/userCreators";
 
 
 const ProtectedRoute = (props) => {
@@ -13,6 +13,7 @@ const ProtectedRoute = (props) => {
             props.setInitialLoadToFalse()
         }
         if (props.isAuthenticated){
+            props.setPreviousRoute(props.path)
             localStorage.setItem('iTripper_page', props.path)
         }
     }, [props.path])
@@ -39,6 +40,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         checkAuthorizationByToken: () => dispatch(checkAuthorizationByToken()),
         setInitialLoadToFalse: () => dispatch(setInitialLoadToFalse()),
+        setPreviousRoute: (route) => dispatch(setPreviousRoute(route)),
     }
 }
 

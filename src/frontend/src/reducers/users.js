@@ -1,7 +1,7 @@
 import {
     SET_USER, SET_USER_POINTS, SET_ROLE, SET_SOCIAL_AUTH, MENU_TOGGLE,
     ERROR_POPUP_OPEN, SET_USER_NAME, SET_ERROR_MESSAGE, SET_USER_PHOTO,
-    INITIAL_LOAD, SET_CURRENT_CAR_PHOTO, SET_USER_MODERATION_ARRAY
+    INITIAL_LOAD, SET_CURRENT_CAR_PHOTO, SET_USER_MODERATION_ARRAY, SET_PREVIOUS_ROUTE
 
 } from '../actions/users'
 
@@ -36,6 +36,7 @@ const initialState = {
     initialLoad: true,
     currentCarPhoto: '',
     moderated: [],
+    previousRoute: ['/'],
 }
 
 function users(state = initialState, action) {
@@ -64,6 +65,9 @@ function users(state = initialState, action) {
             return {...state, currentCarPhoto: action.payload}
         case SET_USER_MODERATION_ARRAY:
             return {...state, moderated: action.payload}
+        case SET_PREVIOUS_ROUTE:
+            return {...state, previousRoute: [...state.previousRoute, action.payload]}
+
 
 
         default:
