@@ -182,10 +182,10 @@ class NewTrip extends Component {
 
             this.props.history.push({pathname: '/main'})
         } else {
-            this.props.errorPopupShow(`Unfortunately the photos you provided have not yet been moderated. You can not
+            this.props.errorPopupShow(`Unfortunately the photos you provided have not been moderated yet. You can not
             register routes and look through other user routes so far. Please contact service team.`)
         }
-        this.rejectRoute()
+        this.clearRoute()
     }
 
     setTripTime = (time) =>{
@@ -223,22 +223,24 @@ class NewTrip extends Component {
             this.setState({valueFrom: this.props.trips.startLocation, valueTo: this.props.trips.finishLocation})
         }
         if (this.props.trips.myLocation !== prevProps.trips.myLocation){
-            this.setState({valueFrom: this.props.trips.myLocation})
+            this.props.setEndLocation(this.props.trips.myLocation, 'start')
         }
     }
 
     componentDidMount(){
-        if (this.props.trips.myLocation){
-            this.setState({valueFrom: this.props.trips.myLocation})
-        }
+        const previousRoute = this.props.previousRoute
+        if (previousRoute[previousRoute.length - 1] !== '/smart') this.props.setMyCoordinates(null);
     }
+
 
     render() {
         const { classes } = this.props;
         const { smart } = this.props.location
         const { role, car, valueFrom, valueTo, tripTime } = this.state
         let currentCar = this.props.userCars.length === 1 ? this.props.userCars[0] : car
-console.log('currentCar.userCarSitsQty = ', currentCar.userCarSitsQty)
+        const previousRoute = this.props.previousRoute
+        const createTrip = previousRoute[previousRoute.length - 2] !== '/smart' ? 'create new trip'
+            : 'create new trip from your current position'
         const carList = this.props.userCars.map((item) => {
             return <MenuItem value={item} key={item.userCarId}>{item.userCarName + ' ' + item.userCarColour}</MenuItem>
         })
@@ -246,7 +248,7 @@ console.log('currentCar.userCarSitsQty = ', currentCar.userCarSitsQty)
             <div className='trip-container'>
                 <LocationDrawer/>
                 <div className='new-trip'>
-                    <span>creating new trip</span>
+                    <span>{ createTrip }</span>
                     <ForDateTimePickers setTripTime={this.setTripTime} tripTime={tripTime}/>
                     <MuiThemeProvider theme={theme}>
                         <RadioGroup

@@ -37,13 +37,17 @@ class LocationDrawer extends React.Component {
                         />
                     <span className='location-drawer-header'>as a location for</span>
                     <div className='location-buttons-container'>
-                    <button
-                        className='location-button'
-                        onClick={() => {this.props.setEndLocation(location, 'start');
-                            this.props.setMyCoordinates(this.props.targetCoordinates)}}
-                    >
-                        Start point
-                    </button>
+                        {!this.props.startLocation &&
+                        <button
+                            className='location-button'
+                            onClick={() => {
+                                this.props.setEndLocation(location, 'start');
+                                this.props.setMyCoordinates(this.props.targetCoordinates)
+                            }}
+                        >
+                            Start point
+                        </button>
+                        }
                     <button
                         className='location-button'
                         onClick={() => this.props.setEndLocation(location, 'end')}
@@ -63,6 +67,7 @@ const mapStateToProps = (state) => {
     return {
         searchedLocation: state.trips.searchedLocation,
         targetCoordinates: state.trips.targetCoordinates,
+        startLocation: state.trips.startLocation,
     }
 }
 
