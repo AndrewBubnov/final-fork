@@ -36,7 +36,6 @@ export default function ControlledOpenSelect({ maxCount, setSeatCapacity }) {
         <MenuItem key={index} value={index}>{item}</MenuItem>
     ))
 
-    console.log('output = ', output)
 
     return (
         <form autoComplete="off">

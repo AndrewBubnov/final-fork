@@ -116,12 +116,10 @@ class Smart extends Component {
         longitude: userPoint.userPointLongitude,
       })
       const address = userPoint.userPointAddress
-      this.props.setEndLocation('My location', 'start')
+      // this.props.setEndLocation(this.props.trips.myLocation, 'start')
       this.props.setEndLocation(address, 'end')
       this.props.history.push({pathname: '/newtrip', smart: true})
-
     }
-
   }
 
 
@@ -223,6 +221,7 @@ class Smart extends Component {
       this.props.history.push({pathname: '/main'})
     }
   }
+
 
 
   render() {
