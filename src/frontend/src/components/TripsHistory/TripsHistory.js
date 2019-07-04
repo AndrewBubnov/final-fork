@@ -11,34 +11,12 @@ import {
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-
 import { errorPopupShow } from '../../actions/userCreators'
 import { callApi  } from '../../utils/utils'
 import Spinner from '../Spinner/Spinner'
+import {tripsHistoryStyles as styles} from '../../styles/styles'
 import './TripsHistory.css'
 
-const styles = theme => ({
-
-    label: {
-        textTransform: 'capitalize'
-    },
-    root: {
-        width: '100%',
-        marginTop: 20,
-        background: 'transparent',
-        position: 'relative',
-        overflow: 'auto',
-        maxHeight: 135,
-    },
-    iconButton: {
-        padding: 0,
-
-        color:'#464d73',
-        '&:focus': {
-            outline: 'none'
-        }
-    }
-})
 
 class TripsHistory extends Component {
     state ={
