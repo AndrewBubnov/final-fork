@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
-import { connect} from 'react-redux'
+import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Photo from './Photo/Photo'
-import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
-import orange from '@material-ui/core/colors/orange'
 import { updateProfile, setPhoto, confirmEmail, clearCurrentCarPhoto } from '../../actions/userCreators'
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
 import Car from './Car/Car'
@@ -15,6 +13,9 @@ import manSihlouette from '../../img/manSihlouette.svg'
 import carSihlouette from '../../img/carSihlouette.svg'
 import ErrorSnackbar from "./ErrorSnackbar/ErrorSnackbar";
 import AddingCar from "./AddingCar/AddingCar";
+import { theme } from '../../styles/styles'
+import { profileStyles as styles } from '../../styles/styles'
+import { profileStyle as style } from '../../styles/style'
 import './Profile.css'
 
 
@@ -299,83 +300,6 @@ class Profile extends Component {
     }
 }
 
-const theme = createMuiTheme({
-    palette: {
-        primary: orange
-    },
-    typography: {useNextVariants: true}
-})
-
-
-const styles = theme => ({
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap'
-    },
-    inputColor: {
-        color: '#fff',
-        width: '100%',
-    },
-    textField: {
-        marginLeft: theme.spacing(1),
-        marginRight: theme.spacing(1)
-    },
-    root: {
-        background: 'linear-gradient(45deg, #ff9800 30%, #f57c00 90%)',
-        borderRadius: 3,
-        border: 0,
-        color: 'white',
-        height: 30,
-        padding: 0,
-        marginTop: 30,
-    },
-    label: {
-        textTransform: 'capitalize'
-    },
-    addButton: {
-        borderRadius: 3,
-        border: '1px solid #fff',
-        color: '#fff',
-        height: 30,
-        width: '47%',
-        padding: 0,
-    },
-    submitButton: {
-        background: '#fff',
-        borderRadius: 3,
-        border: 0,
-        color: 'green',
-        height: 25,
-        padding: '0 10px',
-        marginLeft: 10,
-        marginTop: 20,
-        '&:focus': {
-            background: '#fff',
-            outline: 'none',
-            color: '#008000',
-        }
-    },
-    rejectButton: {
-        background: '#fff',
-        borderRadius: 3,
-        border: 0,
-        color: 'red',
-        height: 25,
-        padding: '0 10px',
-        marginLeft: 10,
-        marginTop: 20,
-        '&:focus': {
-            background: '#fff',
-            outline: 'none',
-            color: '#008000',
-        }
-    },
-})
-const style = {
-    input: {
-        width: '100%',
-    },
-}
 
 const mapStateToProps = (state) => {
     return {

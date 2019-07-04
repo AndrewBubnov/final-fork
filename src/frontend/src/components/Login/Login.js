@@ -3,8 +3,6 @@ import {connect} from 'react-redux'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
-import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
-import orange from '@material-ui/core/colors/orange'
 import { setAuthorization, setSocialAuth, setAuthByToken, errorPopupShow } from '../../actions/userCreators'
 import { setMainTripIdFromStorage } from '../../actions/tripCreators'
 import {withStyles} from '@material-ui/core/styles'
@@ -18,6 +16,9 @@ import IconButton from '@material-ui/core/IconButton';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Link from '@material-ui/core/Link';
+import {theme} from '../../styles/styles'
+import {loginStyles as styles} from '../../styles/styles'
+import {loginStyle as style} from '../../styles/style'
 import './Login.css'
 
 
@@ -278,56 +279,6 @@ class Login extends Component {
     }
 }
 
-const theme = createMuiTheme({
-    palette: {
-        primary: orange
-    },
-    typography: {useNextVariants: true}
-})
-
-const style = {
-    input: {
-        width: '100%',
-    },
-    button: {
-        margin: theme.spacing(1),
-        marginTop: '30px'
-    },
-    radio: {
-        marginTop: '20px',
-        display: 'flex',
-        justifyContent: 'center'
-    }
-}
-
-const styles = theme => ({
-    inputColor: {
-        color: '#fff',
-        width: '100%',
-    },
-    root: {
-        background: 'linear-gradient(45deg, #ff9800 30%, #f57c00 90%)',
-        borderRadius: 3,
-        border: 0,
-        color: 'white',
-        height: 30,
-        padding: '0 30px'
-    },
-    label: {
-        textTransform: 'capitalize'
-    },
-    eye: {
-        cursor: 'pointer',
-        color: '#3E4566',
-        '&:focus': {
-            outline: 'none',
-        }
-    },
-    link: {
-        marginTop: 30,
-        color: '#262626',
-    },
-})
 
 const mapStateToProps = (state) => {
     return {

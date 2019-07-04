@@ -10,86 +10,15 @@ import {
 } from '../../actions/tripCreators'
 import {withStyles} from '@material-ui/core/styles'
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
-import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
-import orange from '@material-ui/core/colors/orange'
 import Slide from '@material-ui/core/Slide';
 import SmartRoute from "./SmartRoute/SmartRoute";
 import LiveSearch from "../LiveSearch/LiveSearch";
 import Map from "../Map/Map";
-import './Smart.css'
+import {theme} from '../../styles/styles'
+import {smartStyles as styles} from '../../styles/styles'
+import {smartStyle as style} from '../../styles/style'
 import WeatherWidget from "./WeatherWidget/WeatherWidget";
-
-
-const windowWidth = window.innerWidth <= 380 ? window.innerWidth : 380
-
-
-const styles = theme => ({
-    label: {
-        textTransform: 'capitalize'
-    },
-    root: {
-        height: 250,
-        flexGrow: 1,
-        width: '100%',
-    },
-    selectEmpty: {
-        marginTop: theme.spacing(2),
-        width: windowWidth * 0.9
-    },
-    inputColor: {
-        color: '#fff',
-        width: '100%'
-    },
-    inputLabel: {
-        textAlign: 'center'
-    },
-    submit: {
-        background: '#fff',
-        borderRadius: 3,
-        border: 0,
-        color: '#f57c00',
-        height: 25,
-        padding: '0 10px',
-        marginLeft: 10,
-        marginTop: 20,
-        '&:focus': {
-            background: '#fff',
-            outline: 'none',
-            color: '#008000',
-        }
-    },
-    formControl: {
-        margin: theme.spacing(2),
-    },
-})
-const style = {
-    input: {
-        width: '100%',
-    },
-    radio: {
-        display: 'flex',
-        justifyContent: 'center'
-    },
-    smartContainer: {
-        display: 'flex',
-        justifyContent: 'space-around',
-        width: '100%',
-        marginTop: 20
-    },
-    fullContainer: {
-        display: 'flex',
-        flexDirection: 'column',
-        width: windowWidth,
-        marginTop: 20
-    }
-}
-
-const theme = createMuiTheme({
-    palette: {
-        primary: orange
-    },
-    typography: {useNextVariants: true}
-})
+import './Smart.css'
 
 
 const Smart = (props) => {

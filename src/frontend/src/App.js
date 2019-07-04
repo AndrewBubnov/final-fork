@@ -5,8 +5,8 @@ import Smart from './components/Smart/Smart'
 import Login from './components/Login/Login'
 import Profile from './components/Profile/Profile'
 import NoMatch from './components/NoMatch/NoMatch'
-import ProtectedRoute from './components/hoc/ProtectedRoute/ProtectedRoute'
-import AuthorizedRoute from "./components/hoc/AuthorizedRoute/AuthorizedRoute";
+import ProtectedRoute from './components/Authorizing/ProtectedRoute/ProtectedRoute'
+import AuthorizedRoute from "./components/Authorizing/AuthorizedRoute/AuthorizedRoute";
 import Header from './components/Header/Header'
 import PassRestoration from './components/PassRestoration/PassRestoration'
 import ChangePassword from './components/ChangePassword/ChangePassword'

@@ -16,84 +16,85 @@ import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
-import orange from "@material-ui/core/colors/orange";
 import CapacitySelect from "../CapacitySelect/CapacitySelect";
+import {theme} from '../../styles/styles'
+import {newTripStyles as styles} from '../../styles/styles'
+import {newTripStyle as style} from '../../styles/style'
 import './NewTrip.css';
 
-const windowWidth = window.innerWidth <= 380 ? window.innerWidth : 380
+// const windowWidth = window.innerWidth <= 380 ? window.innerWidth : 380
 
-const styles = theme => ({
-    acceptButton: {
-        borderRadius: 3,
-        background: '#fff',
-        color: '#008000',
-        height: 30,
-        padding: 0,
-        width: '40%',
-        '&:focus': {
-            background: '#fff',
-            outline: 'none',
-        },
-        '&:active': {
-            background: '#fff',
-            outline: 'none',
-        },
-    },
-    rejectButton: {
-        borderRadius: 3,
-        background: '#fff',
-        color: '#FC0500',
-        height: 30,
-        padding: 0,
-        width: '40%',
-        '&:focus': {
-            background: '#fff',
-            outline: 'none',
-        },
-        '&:active': {
-            background: '#fff',
-            outline: 'none',
-        },
-    },
-    label: {
-        textTransform: 'capitalize'
-    },
-    root: {
-        width: '120%',
-        marginTop: 20,
-        background: 'transparent',
-        position: 'relative',
-        overflow: 'auto',
-        maxHeight: 135,
-    },
-    selectEmpty: {
-        marginTop: theme.spacing(2),
-        width: windowWidth * 0.9
-    },
-    inputColor: {
-        color: '#fff',
-    },
-    formControl: {
-        width: 200,
-    },
-})
+// const styles = theme => ({
+//     acceptButton: {
+//         borderRadius: 3,
+//         background: '#fff',
+//         color: '#008000',
+//         height: 30,
+//         padding: 0,
+//         width: '40%',
+//         '&:focus': {
+//             background: '#fff',
+//             outline: 'none',
+//         },
+//         '&:active': {
+//             background: '#fff',
+//             outline: 'none',
+//         },
+//     },
+//     rejectButton: {
+//         borderRadius: 3,
+//         background: '#fff',
+//         color: '#FC0500',
+//         height: 30,
+//         padding: 0,
+//         width: '40%',
+//         '&:focus': {
+//             background: '#fff',
+//             outline: 'none',
+//         },
+//         '&:active': {
+//             background: '#fff',
+//             outline: 'none',
+//         },
+//     },
+//     label: {
+//         textTransform: 'capitalize'
+//     },
+//     root: {
+//         width: '120%',
+//         marginTop: 20,
+//         background: 'transparent',
+//         position: 'relative',
+//         overflow: 'auto',
+//         maxHeight: 135,
+//     },
+//     selectEmpty: {
+//         marginTop: theme.spacing(2),
+//         width: windowWidth * 0.9
+//     },
+//     inputColor: {
+//         color: '#fff',
+//     },
+//     formControl: {
+//         width: 200,
+//     },
+// })
 
-const style = {
-    radio: {
-        display: 'flex',
-        justifyContent: 'center',
-        height: 60,
-        marginTop: 15,
-    },
-}
-
-const theme = createMuiTheme({
-    palette: {
-        primary: orange
-    },
-    typography: {useNextVariants: true}
-})
+// const style = {
+//     radio: {
+//         display: 'flex',
+//         justifyContent: 'center',
+//         height: 60,
+//         marginTop: 15,
+//     },
+// }
+//
+// const theme = createMuiTheme({
+//     palette: {
+//         primary: orange
+//     },
+//     typography: {useNextVariants: true}
+// })
 
 
 class NewTrip extends Component {

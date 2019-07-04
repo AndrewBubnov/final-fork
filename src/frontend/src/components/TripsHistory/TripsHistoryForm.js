@@ -3,18 +3,10 @@ import { connect } from 'react-redux'
 import TripsHistory from './TripsHistory'
 import {withStyles} from "@material-ui/core/styles/index";
 import Button from '@material-ui/core/Button'
+import {tripsHistoryFormStyles as styles} from '../../styles/styles'
 import './TripsHistoryForm.css'
 
-const styles = theme => ({
-    typeButtons: {
-        borderRadius: 3,
-        border: '1px solid #fff',
-        color: '#fff',
-        height: 30,
-        padding: 0,
-        width: '47%'
-    },
-})
+
 
 class TripsHistoryForm extends Component {
 

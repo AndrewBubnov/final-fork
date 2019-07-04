@@ -8,60 +8,10 @@ import Button from '@material-ui/core/Button'
 import Map from '../../Map/Map'
 import Checkbox from '@material-ui/core/Checkbox';
 import MainRoute from './MainRoute/MainRoute'
+import {mainRenderStyles as styles} from '../../../styles/styles'
 import './MainRender.css'
 
 
-const styles = theme => ({
-    rectangle: {
-        display: 'flex',
-        justifyContent: 'space-around',
-        alignItems: 'center',
-        marginTop: 15,
-    },
-    root: {
-        width: '85%',
-        borderRadius: 4,
-    },
-    heading: {
-        fontSize: theme.typography.pxToRem(15),
-        fontWeight: theme.typography.fontWeightRegular,
-    },
-    expandIcon: {
-        color: '#1A1A1A',
-    },
-    details: {
-        display: 'block',
-    },
-    routeButton: {
-        background: '#fff',
-        borderRadius: 4,
-        color: '#f57c00',
-        height: 30,
-        padding: '0 30px',
-        '&:focus': {
-            background: '#fff',
-            outline: 'none',
-        }
-    },
-    refreshButton: {
-        background: '#fff',
-        borderRadius: 4,
-        color: '#f57c00',
-        height: 30,
-        padding: '0 60px',
-        '&:focus': {
-            background: '#fff',
-            outline: 'none',
-        },
-        '&:active': {
-            background: '#fff',
-            outline: 'none',
-        },
-    },
-    label: {
-        textTransform: 'capitalize'
-    },
-});
 
 class MainRender extends Component {
     state = {
