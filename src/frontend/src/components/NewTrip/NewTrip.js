@@ -238,9 +238,8 @@ class NewTrip extends Component {
         const { smart } = this.props.location
         const { role, car, valueFrom, valueTo, tripTime } = this.state
         let currentCar = this.props.userCars.length === 1 ? this.props.userCars[0] : car
-        const previousRoute = this.props.previousRoute
-        const createTrip = previousRoute[previousRoute.length - 2] !== '/smart' ? 'create new trip'
-            : 'create new trip from your current position'
+
+        const createTrip = this.props.trips.myCoordinates ? 'create new trip from your current position' : 'create new trip'
         const carList = this.props.userCars.map((item) => {
             return <MenuItem value={item} key={item.userCarId}>{item.userCarName + ' ' + item.userCarColour}</MenuItem>
         })
