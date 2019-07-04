@@ -59,6 +59,11 @@ public class TripsController {
     return new ResponseEntity<>(tripsService.getTripListService(user), HttpStatus.OK);
   }
 
+  @GetMapping("id")
+  public ResponseEntity<TripResponse> getOneTrip(@RequestBody Trip trip, @RequestHeader String authorization) {
+    return new ResponseEntity<>(tripsService.getOneTrip(trip), HttpStatus.OK);
+  }
+
   @DeleteMapping
   public ResponseEntity<String> deleteUserTrip(@RequestBody Trip trip, @RequestHeader String authorization) {
     return new ResponseEntity<>(tripsService.deleteTripById(trip.getTripId(),
