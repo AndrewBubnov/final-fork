@@ -204,5 +204,9 @@ public class TripsService {
     }
     return sentMessageAboutChanges;
   }
+
+  public TripResponse getOneTrip(Trip trip) {
+    return tripFacade.mapEntityToResponseDto(tripsRepository.getOne(trip.getTripId()));
+  }
 }
 
