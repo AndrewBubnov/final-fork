@@ -3,6 +3,7 @@ import { logOut, errorPopupShow } from "../actions/userCreators";
 
 export const callApi = (method, url, data, config) => {
     let headers = null
+    let bearer = null
     if (window.localStorage.getItem('iTripper_access_token')){
         const refreshTokenExpires = Date.parse(localStorage.getItem('iTripper_refresh_token_expires'))
         const accessTokenExpires = Date.parse(localStorage.getItem('iTripper_access_token_expires'))
@@ -18,20 +19,14 @@ export const callApi = (method, url, data, config) => {
                 .then(response => {
                     if (response.data) {
                         setLocalStorage(response.data.userTokenAccess, response.data.userTokenRefresh)
-                        headers = {
-                            Authorization: `Bearer ${response.data.userTokenAccess}`,
-                        }
-                        headers = Object.assign({ Authorization: `Bearer ${response.data.userTokenAccess}` }, config)
-                        return axiosRequest(method, url, data, headers, config)
+                        bearer = response.data.userTokenAccess
                     } else {
                         logOut()
                     }
                 })
         }
-        headers = {
-            Authorization: `Bearer ${window.localStorage.getItem('iTripper_access_token')}`,
-        }
-        headers = Object.assign({ Authorization: `Bearer ${localStorage.getItem('iTripper_access_token')}` }, config)
+        bearer = window.localStorage.getItem('iTripper_access_token')
+        headers = Object.assign({ Authorization: `Bearer ${bearer}` }, config)
     }
     return axiosRequest(method, url, data, headers, config)
 }
