@@ -13,15 +13,9 @@ import axios from 'axios'
 //* *********************
 
 export const checkAuthorizationByToken = () => async dispatch => {
-    const accessToken = window.localStorage.getItem('iTripper_access_token');
+    const accessToken = localStorage.getItem('iTripper_access_token');
     if (accessToken) {
-        const accessTokenExpires = window.localStorage.getItem('iTripper_access_token_expires')
-        const refreshTokenExpires = window.localStorage.getItem('iTripper_refresh_token_expires')
-        if (refreshTokenExpires && (Date.now() > Date.parse(refreshTokenExpires))) {
-            dispatch(logOut());
-        } else if (accessTokenExpires && (Date.now() > Date.parse(accessTokenExpires))) {
-            dispatch({type: REFRESH_TOKENS})
-        }
+        dispatch(checkTokens())
     } else {
         dispatch(logOut())
     }
@@ -29,20 +23,15 @@ export const checkAuthorizationByToken = () => async dispatch => {
 // * *********************
 
 export const setAuthByToken = () => async dispatch => {
-    const userToken = window.localStorage.getItem('iTripper_access_token');
+    const userToken = localStorage.getItem('iTripper_access_token');
     if (userToken) {
         dispatch({type: INITIAL_LOAD, payload: true})
-        const accessTokenExpires = localStorage.getItem('iTripper_access_token_expires')
-        const refreshTokenExpires = localStorage.getItem('iTripper_refresh_token_expires')
-        if (refreshTokenExpires && (Date.now() > Date.parse(refreshTokenExpires))) {
-            dispatch(logOut());
-        } else if (accessTokenExpires && (Date.now() > Date.parse(accessTokenExpires))) {
-            dispatch({type: REFRESH_TOKENS})
-        }
+        dispatch(checkTokens())
         try {
             const response = await callApi('post', '/api/logins/signin', {userToken})
             setLocalStorage(response.data.userTokenAccess, response.data.userTokenRefresh)
             dispatch({type: SET_USER, payload: response.data})
+            dispatch(refreshTokensBySchedule())
         } catch (error) {
             dispatch(logOut())
             dispatch(errorPopupShow())
@@ -50,6 +39,17 @@ export const setAuthByToken = () => async dispatch => {
     }
 }
 
+// * *********************
+
+const checkTokens = () => dispatch => {
+    const accessTokenExpires = localStorage.getItem('iTripper_access_token_expires')
+    const refreshTokenExpires = localStorage.getItem('iTripper_refresh_token_expires')
+    if (refreshTokenExpires && (Date.now() > Date.parse(refreshTokenExpires))) {
+        dispatch(logOut());
+    } else if (accessTokenExpires && (Date.now() > Date.parse(accessTokenExpires))) {
+        dispatch({type: REFRESH_TOKENS})
+    }
+}
 // * *********************
 
 export const setAuthorization = (state, signType) => async dispatch => {
@@ -87,7 +87,6 @@ const refreshTokensBySchedule = () => dispatch => {
         dispatch({type: REFRESH_TOKENS})
     }, 880000)
     dispatch ({type: SET_TOKEN_TIMEOUT, payload: interval})
-    dispatch ({type: REFRESH_TOKENS})
 }
 //* *********************
 
@@ -179,8 +178,8 @@ export const errorPopupShow = (errorMessage) => dispatch => {
 
 export const restorePassword = (email) => dispatch =>{
     callApi('post', 'api/logins/email', {userLogin: email})
-      .then(resp => console.log(resp))
-      .catch(console.log)
+        .then(resp => console.log(resp))
+        .catch(console.log)
 }
 //* **********************
 
