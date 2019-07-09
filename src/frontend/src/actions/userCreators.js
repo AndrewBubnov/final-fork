@@ -1,10 +1,11 @@
 import {
     SET_USER, SET_USER_POINTS, SET_SOCIAL_AUTH, MENU_TOGGLE,
     ERROR_POPUP_OPEN, SET_ERROR_MESSAGE, SET_USER_MODERATION_ARRAY,
-    USER_LOGOUT, INITIAL_LOAD, SET_USER_PHOTO, SET_CURRENT_CAR_PHOTO, SET_PREVIOUS_ROUTE
+    USER_LOGOUT, INITIAL_LOAD, SET_USER_PHOTO, SET_CURRENT_CAR_PHOTO, SET_PREVIOUS_ROUTE,
+    SET_TOKEN_TIMEOUT, REFRESH_TOKENS
 } from './users'
 
-import {callApi, setLocalStorage, removeTokens} from '../utils/utils'
+import { callApi, setLocalStorage, removeTokens} from '../utils/utils'
 
 import axios from 'axios'
 
@@ -16,21 +17,10 @@ export const checkAuthorizationByToken = () => async dispatch => {
     if (accessToken) {
         const accessTokenExpires = window.localStorage.getItem('iTripper_access_token_expires')
         const refreshTokenExpires = window.localStorage.getItem('iTripper_refresh_token_expires')
-        const userTokenRefresh = window.localStorage.getItem('iTripper_refresh_token')
         if (refreshTokenExpires && (Date.now() > Date.parse(refreshTokenExpires))) {
             dispatch(logOut());
         } else if (accessTokenExpires && (Date.now() > Date.parse(accessTokenExpires))) {
-            try {
-                const response = await axios.post('/api/usertokens', {userTokenRefresh})
-                if (response.data) {
-                    setLocalStorage(response.data.userTokenAccess, response.data.userTokenRefresh)
-                } else {
-                    dispatch(logOut())
-                }
-            } catch (err) {
-                // dispatch(errorPopupShow())
-                console.log(err)
-            }
+            dispatch({type: REFRESH_TOKENS})
         }
     } else {
         dispatch(logOut())
@@ -42,37 +32,20 @@ export const setAuthByToken = () => async dispatch => {
     const userToken = window.localStorage.getItem('iTripper_access_token');
     if (userToken) {
         dispatch({type: INITIAL_LOAD, payload: true})
-        const accessTokenExpires = window.localStorage.getItem('iTripper_access_token_expires')
-        const refreshTokenExpires = window.localStorage.getItem('iTripper_refresh_token_expires')
-        const userTokenRefresh = window.localStorage.getItem('iTripper_refresh_token')
+        const accessTokenExpires = localStorage.getItem('iTripper_access_token_expires')
+        const refreshTokenExpires = localStorage.getItem('iTripper_refresh_token_expires')
         if (refreshTokenExpires && (Date.now() > Date.parse(refreshTokenExpires))) {
             dispatch(logOut());
         } else if (accessTokenExpires && (Date.now() > Date.parse(accessTokenExpires))) {
-            try {
-                const response = await axios.post('/api/usertokens', { userTokenRefresh })
-                if (response.data) {
-                    setLocalStorage(response.data.userTokenAccess, response.data.userTokenRefresh)
-                    try {
-                        const res = await callApi('post', '/api/logins/signin', {userToken: response.data.userTokenAccess})
-                        dispatch({type: SET_USER, payload: res.data})
-                    } catch (error) {
-                        dispatch(logOut())
-                    }
-                } else {
-                    dispatch(logOut())
-                }
-            } catch (error) {
-                // dispatch(errorPopupShow())
-                console.log(error)
-            }
-        } else {
-            try {
-                const response = await callApi('post', '/api/logins/signin', {userToken})
-                setLocalStorage(response.data.userTokenAccess, response.data.userTokenRefresh)
-                dispatch({type: SET_USER, payload: response.data})
-            } catch (error) {
-                dispatch(errorPopupShow())
-            }
+            dispatch({type: REFRESH_TOKENS})
+        }
+        try {
+            const response = await callApi('post', '/api/logins/signin', {userToken})
+            setLocalStorage(response.data.userTokenAccess, response.data.userTokenRefresh)
+            dispatch({type: SET_USER, payload: response.data})
+        } catch (error) {
+            dispatch(logOut())
+            dispatch(errorPopupShow())
         }
     }
 }
@@ -101,10 +74,20 @@ export const setAuthorization = (state, signType) => async dispatch => {
         setLocalStorage(response.data.userTokenAccess, response.data.userTokenRefresh)
         dispatch({type: SET_USER, payload: response.data})
         dispatch({type: INITIAL_LOAD, payload: true})
+        dispatch(refreshTokensBySchedule())
     } catch (error) {
         dispatch(setErrorPopupOpen(true))
         dispatch(setErrorMessage(error.response.data))
     }
+}
+//* *********************
+
+const refreshTokensBySchedule = () => dispatch => {
+    const interval = setInterval(async () => {
+        dispatch({type: REFRESH_TOKENS})
+    }, 880000)
+    dispatch ({type: SET_TOKEN_TIMEOUT, payload: interval})
+    dispatch ({type: REFRESH_TOKENS})
 }
 //* *********************
 
@@ -113,7 +96,8 @@ export const setSocialAuth = (auth) => dispatch => {
 }
 //* **********************
 
-export const logOut = () => dispatch => {
+export const logOut = () => (dispatch, getState) => {
+    clearInterval(getState().users.tokenRefreshTimeout)
     dispatch({type: USER_LOGOUT})
     removeTokens()
 }
@@ -232,3 +216,5 @@ export const moderatePhotos = (data) => (dispatch, getState) => {
 export const setPreviousRoute = (route) => dispatch => {
     dispatch({type: SET_PREVIOUS_ROUTE, payload: route})
 }
+//* *********************
+
