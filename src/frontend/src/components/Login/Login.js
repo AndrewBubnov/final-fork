@@ -24,8 +24,8 @@ import './Login.css'
 
 
 firebase.initializeApp({
-    apiKey: 'AIzaSyDx0_JsSsE45hOx_XKwpVptROViTneTVbA',
-    authDomain: 'social-auth-7.firebaseapp.com'
+    apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+    authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN
 })
 
 const uiConfig = {

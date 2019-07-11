@@ -9,8 +9,8 @@ import './Map.css'
 /*global H*/
 
 let platform = {
-    app_id: 'dxvPSIheZpzC0JnT43pa',
-    app_code: '2AQJFcfRqLmLZPd0q0hz7g',
+    app_id: process.env.REACT_APP_MAP_ID,
+    app_code: process.env.REACT_APP_MAP_CODE,
     center: {
         lat: 50.449394,
         lng: 30.525433,
