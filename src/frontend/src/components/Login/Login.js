@@ -94,7 +94,6 @@ const Login = (props) => {
     };
 
 
-
     useEffect(() => {
         props.setAuthByToken();
         if (localStorage.getItem('tripId') && localStorage.getItem('iTripper_page') === '/main') {
@@ -114,7 +113,7 @@ const Login = (props) => {
             firebase.auth().currentUser.getIdToken()
                 .then(result => {
                     token = result
-                    if (mounted){
+                    if (mounted) {
                         const user = {login: firebase.auth().currentUser.email, token}
                         setAuth(user)
                     }
@@ -163,11 +162,11 @@ const Login = (props) => {
         let autoFocus = false
         let inputRef = undefined
         const type = item === 'login' ? 'text' : (passwordIsHidden ? 'password' : 'text')
-        if (item === 'login'){
+        if (item === 'login') {
             label = "Phone or email"
             autoFocus = true
             inputRef = loginInput
-            inputProps={
+            inputProps = {
                 classes: {
                     input: classes.inputColor
                 }
@@ -178,17 +177,17 @@ const Login = (props) => {
                     input: classes.inputColor
                 },
                 endAdornment: (
-                <InputAdornment position="end">
-                <IconButton
-                aria-label="Toggle password visibility"
-                className={classes.eye}
-            onClick={togglePasswordMask}
-                >
-                {passwordIsHidden ? <VisibilityOff/> : <Visibility/>}
-        </IconButton>
-            </InputAdornment>
-        ),
-        }
+                    <InputAdornment position="end">
+                        <IconButton
+                            aria-label="Toggle password visibility"
+                            className={classes.eye}
+                            onClick={togglePasswordMask}
+                        >
+                            {passwordIsHidden ? <VisibilityOff/> : <Visibility/>}
+                        </IconButton>
+                    </InputAdornment>
+                ),
+            }
             if (item === 'password') {
                 label = "Password"
             } else if (item === 'confirmPassword') {
@@ -198,74 +197,74 @@ const Login = (props) => {
 
         return (
             <TextField
-        key={item}
-        type={type}
-        label={label}
-        autoFocus={autoFocus}
-        style={style.input}
-        autoComplete="off"
-        name={item}
-        value={user[item]}
-        onChange={setUser}
-        onBlur={onBlur}
-        onFocus={onFocus}
-        error={error[item].length > 0}
-        helperText={error[item]}
-        inputRef = {inputRef}
-        InputProps={inputProps}
-        />
-    )
+                key={item}
+                type={type}
+                label={label}
+                autoFocus={autoFocus}
+                style={style.input}
+                autoComplete="off"
+                name={item}
+                value={user[item]}
+                onChange={setUser}
+                onBlur={onBlur}
+                onFocus={onFocus}
+                error={error[item].length > 0}
+                helperText={error[item]}
+                inputRef={inputRef}
+                InputProps={inputProps}
+            />
+        )
     })
     return (
         <div className="login-container">
-        <MuiThemeProvider theme={theme}>
-        <RadioGroup
-    aria-label="position"
-    name="position"
-    value={signType}
-    onChange={handleRadio}
-    row
-    style={style.radio}
->
-<FormControlLabel
-    value="log-in"
-    control={<Radio color="primary"/>}
-    label="Log in"
-    labelPlacement="top"
-        />
-        <FormControlLabel
-    value="register"
-    control={<Radio color="primary"/>}
-    label="Register"
-    labelPlacement="top" color="primary"
-        />
-        </RadioGroup>
+            <MuiThemeProvider theme={theme}>
+                <RadioGroup
+                    aria-label="position"
+                    name="position"
+                    value={signType}
+                    onChange={handleRadio}
+                    row
+                    style={style.radio}
+                >
+                    <FormControlLabel
+                        value="log-in"
+                        control={<Radio color="primary"/>}
+                        label="Log in"
+                        labelPlacement="top"
+                    />
+                    <FormControlLabel
+                        value="register"
+                        control={<Radio color="primary"/>}
+                        label="Register"
+                        labelPlacement="top" color="primary"
+                    />
+                </RadioGroup>
 
-        <StyledFirebaseAuth
-    uiConfig={uiConfig}
-    firebaseAuth={firebase.auth()}
-    />
+                <StyledFirebaseAuth
+                    uiConfig={uiConfig}
+                    firebaseAuth={firebase.auth()}
+                />
 
-    {signType === 'log-in' && <span>or</span>}
+                {signType === 'log-in' && <span>or</span>}
 
-        {inputs}
+                {inputs}
 
-        {signType === 'log-in' &&
-        <Link href={'/restore_password'} className={classes.link}>
-            forgot password?
-        </Link>
-        }
-    <Button onClick={() => setAuth(user)}
-        disabled={!allChecks}
-        style={style.button}
-        classes={{
-        root: classes.root,
-            label: classes.label
-    }}
-    >
-        Submit
-        </Button>
-        </MuiThemeProvider>
+                {signType === 'log-in' &&
+                <Link href={'/restore_password'} className={classes.link}>
+                    forgot password?
+                </Link>
+                }
+                <Button onClick={() => setAuth(user)}
+                        disabled={!allChecks}
+                        style={style.button}
+                        classes={{
+                            root: classes.root,
+                            label: classes.label
+                        }}
+                >
+                    Submit
+                </Button>
+            </MuiThemeProvider>
         </div>
     )
 }
