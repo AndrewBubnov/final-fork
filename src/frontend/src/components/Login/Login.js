@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react'
 import {connect} from 'react-redux'
+import useForm from '../../hooks/useForm'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
@@ -44,12 +45,6 @@ const email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const Login = (props) => {
 
-    const [user, setUser] = useState({
-        login: '',
-        password: '',
-        token: '',
-        confirmPassword: ''
-    });
     const [error, setError] = useState({
         login: '',
         password: '',
@@ -91,9 +86,14 @@ const Login = (props) => {
         loginInput.current.focus();
     };
 
-    const handleInput = ({target: {name, value}}) => {
-        setUser({...user, [name]: value})
+    let initialInputs = {
+        login: '',
+        password: '',
     }
+
+    if (signType !== 'log-in') initialInputs.confirmPassword = ''
+
+    const [user, setUser] = useForm(initialInputs)
 
     useEffect(() => {
         props.setAuthByToken();
@@ -108,16 +108,22 @@ const Login = (props) => {
     }, [])
 
     useEffect(() => {
+        let mounted = true
         if (firebaseAuthed) {
             let token = null
             firebase.auth().currentUser.getIdToken()
                 .then(result => {
                     token = result
-                    const user = {login: firebase.auth().currentUser.email, token}
-                    setAuth(user)
+                    if (mounted){
+                        const user = {login: firebase.auth().currentUser.email, token}
+                        setAuth(user)
+                    }
                 })
                 .catch(err => props.errorPopupShow())
         }
+        return () => {
+            mounted = false;
+        };
     }, [firebaseAuthed])
 
     useEffect(() => {
@@ -150,132 +156,116 @@ const Login = (props) => {
     const allChecks = (phoneNumber.test(login.split('-').join('')) || email.test(login.toLowerCase())) &&
         ((signType === 'log-in' && login !== '' && password.length >= 5) ||
             (signType === 'register' && login !== '' && password.length >= 5 && password === confirmPassword))
+
+    const inputs = Object.keys(initialInputs).map(item => {
+        let label = ''
+        let inputProps = {}
+        let autoFocus = false
+        let inputRef = undefined
+        const type = item === 'login' ? 'text' : (passwordIsHidden ? 'password' : 'text')
+        if (item === 'login'){
+            label = "Phone or email"
+            autoFocus = true
+            inputRef = loginInput
+            inputProps={
+                classes: {
+                    input: classes.inputColor
+                }
+            }
+        } else {
+            inputProps = {
+                classes: {
+                    input: classes.inputColor
+                },
+                endAdornment: (
+                <InputAdornment position="end">
+                <IconButton
+                aria-label="Toggle password visibility"
+                className={classes.eye}
+            onClick={togglePasswordMask}
+                >
+                {passwordIsHidden ? <VisibilityOff/> : <Visibility/>}
+        </IconButton>
+            </InputAdornment>
+        ),
+        }
+            if (item === 'password') {
+                label = "Password"
+            } else if (item === 'confirmPassword') {
+                label = "Confirm password"
+            }
+        }
+
+        return (
+            <TextField
+        key={item}
+        type={type}
+        label={label}
+        autoFocus={autoFocus}
+        style={style.input}
+        autoComplete="off"
+        name={item}
+        value={user[item]}
+        onChange={setUser}
+        onBlur={onBlur}
+        onFocus={onFocus}
+        error={error[item].length > 0}
+        helperText={error[item]}
+        inputRef = {inputRef}
+        InputProps={inputProps}
+        />
+    )
+    })
     return (
         <div className="login-container">
-            <MuiThemeProvider theme={theme}>
-                <RadioGroup
-                    aria-label="position"
-                    name="position"
-                    value={signType}
-                    onChange={handleRadio}
-                    row
-                    style={style.radio}
-                >
-                    <FormControlLabel
-                        value="log-in"
-                        control={<Radio color="primary"/>}
-                        label="Log in"
-                        labelPlacement="top"
-                    />
-                    <FormControlLabel
-                        value="register"
-                        control={<Radio color="primary"/>}
-                        label="Register"
-                        labelPlacement="top" color="primary"
-                    />
-                </RadioGroup>
+        <MuiThemeProvider theme={theme}>
+        <RadioGroup
+    aria-label="position"
+    name="position"
+    value={signType}
+    onChange={handleRadio}
+    row
+    style={style.radio}
+>
+<FormControlLabel
+    value="log-in"
+    control={<Radio color="primary"/>}
+    label="Log in"
+    labelPlacement="top"
+        />
+        <FormControlLabel
+    value="register"
+    control={<Radio color="primary"/>}
+    label="Register"
+    labelPlacement="top" color="primary"
+        />
+        </RadioGroup>
 
-                <StyledFirebaseAuth
-                    uiConfig={uiConfig}
-                    firebaseAuth={firebase.auth()}
-                />
+        <StyledFirebaseAuth
+    uiConfig={uiConfig}
+    firebaseAuth={firebase.auth()}
+    />
 
-                {signType === 'log-in' && <span>or</span>}
-                <TextField
-                    label="Phone or email"
-                    autoFocus={true}
-                    style={style.input}
-                    autoComplete="off"
-                    name='login'
-                    value={login}
-                    onChange={handleInput}
-                    onBlur={onBlur}
-                    onFocus={onFocus}
-                    error={error.login.length > 0}
-                    helperText={error.login}
-                    inputRef={loginInput}
-                    InputProps={{
-                        classes: {
-                            input: classes.inputColor
-                        }
-                    }}
-                />
-                <TextField
-                    label="Password"
-                    type={passwordIsHidden ? 'password' : 'text'}
-                    style={style.input}
-                    autoComplete="off"
-                    name='password'
-                    value={password}
-                    onChange={handleInput}
-                    onBlur={onBlur}
-                    onFocus={onFocus}
-                    error={error.password.length > 0}
-                    helperText={error.password}
-                    InputProps={{
-                        classes: {
-                            input: classes.inputColor
-                        },
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <IconButton
-                                    aria-label="Toggle password visibility"
-                                    className={classes.eye}
-                                    onClick={togglePasswordMask}
-                                >
-                                    {passwordIsHidden ? <VisibilityOff/> : <Visibility/>}
-                                </IconButton>
-                            </InputAdornment>
-                        ),
-                    }}
-                />
-                {signType === 'register' &&
-                <TextField
-                    label="Confirm password"
-                    type={passwordIsHidden ? 'password' : 'text'}
-                    style={style.input}
-                    autoComplete="off"
-                    name='confirmPassword'
-                    value={confirmPassword}
-                    onChange={handleInput}
-                    onBlur={onBlur}
-                    onFocus={onFocus}
-                    error={error.confirmPassword.length > 0}
-                    helperText={error.confirmPassword}
-                    InputProps={{
-                        classes: {
-                            input: classes.inputColor
-                        },
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <IconButton
-                                    aria-label="Toggle password visibility"
-                                    className={classes.eye}
-                                    onClick={togglePasswordMask}
-                                >
-                                    {passwordIsHidden ? <VisibilityOff/> : <Visibility/>}
-                                </IconButton>
-                            </InputAdornment>
-                        ),
-                    }}
-                />
-                }
-                {signType === 'log-in' &&
-                <Link href={'/restore_password'} className={classes.link}>
-                    forgot password?
-                </Link>
-                }
-                <Button onClick={() => setAuth(user)}
-                        disabled={!allChecks}
-                        style={style.button}
-                        classes={{
-                            root: classes.root,
-                            label: classes.label
-                        }}
-                >
-                    Submit
-                </Button>
-            </MuiThemeProvider>
+    {signType === 'log-in' && <span>or</span>}
+
+        {inputs}
+
+        {signType === 'log-in' &&
+        <Link href={'/restore_password'} className={classes.link}>
+            forgot password?
+        </Link>
+        }
+    <Button onClick={() => setAuth(user)}
+        disabled={!allChecks}
+        style={style.button}
+        classes={{
+        root: classes.root,
+            label: classes.label
+    }}
+    >
+        Submit
+        </Button>
+        </MuiThemeProvider>
         </div>
     )
 }

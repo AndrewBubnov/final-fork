@@ -38,13 +38,13 @@ export const smartStyle = {
         display: 'flex',
         justifyContent: 'space-around',
         width: '100%',
-        marginTop: 20
+        marginTop: 30
     },
     fullContainer: {
         display: 'flex',
         flexDirection: 'column',
         width: windowWidth,
-        marginTop: 20
+        marginTop: 30
     }
 }
 //*******************************

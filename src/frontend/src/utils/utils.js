@@ -60,6 +60,7 @@ export const removeTokens = () => {
     localStorage.removeItem('iTripper_refresh_token_expires')
     localStorage.removeItem('iTripper_page')
     localStorage.removeItem('tripId')
+    localStorage.removeItem('firebaseui::rememberedAccounts')
 }
 
 //* *********************

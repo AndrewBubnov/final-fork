@@ -3,8 +3,7 @@ import { setLocalStorage } from "../utils/utils";
 import { REFRESH_TOKENS, SET_TOKENS_FETCHING } from "../actions/users";
 
 export const refreshTokens = (store) => (next) => async (action) => {
-
-    if (action.type === REFRESH_TOKENS && !store.tokensAreFetching) {
+    if (action.type === REFRESH_TOKENS && !store.getState().users.tokensAreFetching) {
         const data = {userTokenRefresh: localStorage.getItem('iTripper_refresh_token')}
         try {
             store.dispatch({type: SET_TOKENS_FETCHING, payload: true})
