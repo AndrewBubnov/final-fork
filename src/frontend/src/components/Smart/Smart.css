@@ -1,11 +1,10 @@
 .welcome-user{
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: center;
-    margin-top: 20px;
     width: 100%;
     color: #fff;
+
 }
 .logout-button{
     margin-top: 30px;
@@ -15,7 +14,7 @@
     justify-content: space-between;
     width: 80%;
     height: 40px;
-    /*margin-top: 70px;*/
+    margin-top: 20px;
 }
 .type-button{
     position: relative;
@@ -56,4 +55,7 @@
 }
 .quick-trips{
     margin-top: 20px;
+}
+.invitation-top{
+    margin-top: 10px;
 }

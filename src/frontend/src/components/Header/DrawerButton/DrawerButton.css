@@ -9,7 +9,7 @@
     align-items: center;
 }
 .hamburger{
-    background-color: #fff;
+    /*background-color: #fff;*/
     width: 30px;
     height: 3px;
     position: absolute;

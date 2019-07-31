@@ -7,10 +7,13 @@ class DrawerButton extends Component {
     state ={
       buttonClicked: false
     };
+
     buttonToggle = () => {
       this.setState({buttonClicked: true})
     };
+
     render () {
+      const {color} = this.props
       let firstClass = ''
       let secondClass = ''
       let thirdClass = ''
@@ -31,11 +34,11 @@ class DrawerButton extends Component {
       }
       return (
         <div onClick={() => { this.props.topMenuToggle(this.props.open); this.buttonToggle() }} className="hamburger-button">
-          <div className={firstClass}>
+          <div className={firstClass} style={{backgroundColor: color}}>
           </div>
-          <div className={secondClass}>
+          <div className={secondClass} style={{backgroundColor: color}}>
           </div>
-          <div className={thirdClass}>
+          <div className={thirdClass} style={{backgroundColor: color}}>
           </div>
         </div>
       )

@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { connect } from "react-redux";
 import { setTargetCoordinates, setSearchedLocation, setIntermediatePoints, setMyCoordinates,
-    setMyLocation, setClearMap } from "../../actions/tripCreators";
+    setMyLocation, setClearMap, setHamburgerColor } from "../../actions/tripCreators";
 import PropTypes from 'prop-types';
 import './Map.css'
 
@@ -273,6 +273,7 @@ class Map extends Component {
         if (this.props.userMainTripParams && this.props.showMainRoute){
             this.renderUserMainRoute()
         }
+        this.props.setHamburgerColor('#464d73')
     }
 
 
@@ -307,11 +308,12 @@ class Map extends Component {
         if (this.listen){
             this.map.removeEventListener(this.listen)
         }
+        this.props.setHamburgerColor('#fff')
     }
 
     render() {
-        let height = this.props.height ? this.props.height : 350
-        let marginTop = this.props.marginTop ? this.props.marginTop : '20px'
+        let height = this.props.height || 350
+        let marginTop = this.props.marginTop || '20px'
         return (
             <div style={{width: '100%', marginTop}}>
                 <div id="here-map" style={{width: '100%', height, background: 'grey'}} />
@@ -349,6 +351,7 @@ const mapDispatchToProps = (dispatch) => {
         setMyCoordinates: (coordinates) => dispatch(setMyCoordinates(coordinates)),
         setMyLocation: (location) => dispatch(setMyLocation(location)),
         setClearMap: (value) => dispatch(setClearMap(value)),
+        setHamburgerColor: (color) => dispatch(setHamburgerColor(color)),
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Map)

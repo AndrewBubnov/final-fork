@@ -7,23 +7,23 @@ import ArrowBack from '@material-ui/icons/ArrowBack';
 import './Header.css'
 
 
-const Header = ({ previousRoute, userName, history }) => {
+const Header = ({ previousRoute, userName, history, color }) => {
     const handleBack = () => {
         if (previousRoute[previousRoute.length - 2] !== '/') {
             history.push({pathname: previousRoute[previousRoute.length - 2]})
         }
     }
 
-    let greeting = userName ? userName : 'friend'
     return (
         <div className="header">
-            <div className='arrow-back'>
+            <div className='arrow-back' style={{color}}>
                 <ArrowBack
                     onClick={handleBack}
                 />
             </div>
-            Welcome, {greeting}
-            <DrawerButton/>
+            <DrawerButton
+                color={color}
+            />
             <Drawer/>
         </div>
     )
@@ -33,6 +33,7 @@ const mapStateToProps = (state) => {
     return {
         userName: state.users.user.userName,
         previousRoute: state.users.previousRoute,
+        color: state.trips.hamburgerColor,
     }
 }
 

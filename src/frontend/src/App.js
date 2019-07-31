@@ -23,11 +23,9 @@ import './App.css'
 
 class App extends Component {
     render() {
-        const { isAuthenticated } = this.props.users
-
         return (
             <>
-                { window.innerWidth < 710 && isAuthenticated && <Header/> }
+                { window.innerWidth < 710 && this.props.isAuthenticated && <Header/> }
                 <div className="App">
                     <Switch>
                         <Route exact path='/' render={(props) => <Login {...props}/>}/>
@@ -51,7 +49,7 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    users: state.users
+      isAuthenticated: state.users.isAuthenticated,
   }
 }
 

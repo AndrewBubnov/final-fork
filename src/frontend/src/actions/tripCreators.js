@@ -1,7 +1,7 @@
 import { SET_CURRENT_TRIP_PARAMS, SET_TRIP, SET_MY_COORDS, SET_TARGET_COORDS, SET_SEARCHED_LOCATION,
          SET_INTERMEDIATE_POINTS, SET_MAIN_TRIP_ID, DELETE_TRIP_FROM_HISTORY, SET_START_LOCATION,
          SET_FINISH_LOCATION, CLEAR_MAP, SET_MY_LOCATION, SET_USER_MAIN_TRIP_SHOWN,
-         SET_TRIP_SUPERPOSITION_PARAMS, SET_MAIN_TRIPS_PARAMS } from './trips'
+         SET_TRIP_SUPERPOSITION_PARAMS, SET_MAIN_TRIPS_PARAMS, SET_HAMBURGER_COLOR } from './trips'
 import { errorPopupShow } from './userCreators'
 import {callApi} from "../utils/utils";
 
@@ -142,6 +142,11 @@ export const setUserMainTripShown = (value) => dispatch => {
 export const clearMainTripId = () => dispatch => {
     dispatch({type: SET_MAIN_TRIP_ID, payload: null})
     dispatch({type: SET_MAIN_TRIPS_PARAMS, payload: null})
+}
+//* **********************
+
+export const setHamburgerColor = (color) => dispatch => {
+    dispatch({type: SET_HAMBURGER_COLOR, payload: color})
 }
 
 

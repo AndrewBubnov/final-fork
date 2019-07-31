@@ -178,8 +178,8 @@ export const errorPopupShow = (errorMessage) => dispatch => {
 
 export const restorePassword = (email) => dispatch =>{
     callApi('post', 'api/logins/email', {userLogin: email})
-        .then(resp => console.log(resp))
-        .catch(console.log)
+      .then(resp => console.log(resp))
+      .catch(console.log)
 }
 //* **********************
 

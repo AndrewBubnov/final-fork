@@ -22,80 +22,6 @@ import {newTripStyles as styles} from '../../styles/styles'
 import {newTripStyle as style} from '../../styles/style'
 import './NewTrip.css';
 
-// const windowWidth = window.innerWidth <= 380 ? window.innerWidth : 380
-
-// const styles = theme => ({
-//     acceptButton: {
-//         borderRadius: 3,
-//         background: '#fff',
-//         color: '#008000',
-//         height: 30,
-//         padding: 0,
-//         width: '40%',
-//         '&:focus': {
-//             background: '#fff',
-//             outline: 'none',
-//         },
-//         '&:active': {
-//             background: '#fff',
-//             outline: 'none',
-//         },
-//     },
-//     rejectButton: {
-//         borderRadius: 3,
-//         background: '#fff',
-//         color: '#FC0500',
-//         height: 30,
-//         padding: 0,
-//         width: '40%',
-//         '&:focus': {
-//             background: '#fff',
-//             outline: 'none',
-//         },
-//         '&:active': {
-//             background: '#fff',
-//             outline: 'none',
-//         },
-//     },
-//     label: {
-//         textTransform: 'capitalize'
-//     },
-//     root: {
-//         width: '120%',
-//         marginTop: 20,
-//         background: 'transparent',
-//         position: 'relative',
-//         overflow: 'auto',
-//         maxHeight: 135,
-//     },
-//     selectEmpty: {
-//         marginTop: theme.spacing(2),
-//         width: windowWidth * 0.9
-//     },
-//     inputColor: {
-//         color: '#fff',
-//     },
-//     formControl: {
-//         width: 200,
-//     },
-// })
-
-// const style = {
-//     radio: {
-//         display: 'flex',
-//         justifyContent: 'center',
-//         height: 60,
-//         marginTop: 15,
-//     },
-// }
-//
-// const theme = createMuiTheme({
-//     palette: {
-//         primary: orange
-//     },
-//     typography: {useNextVariants: true}
-// })
-
 
 class NewTrip extends Component {
 
@@ -246,11 +172,38 @@ class NewTrip extends Component {
         })
         return (
             <div className='trip-container'>
+                <Map
+                    height={230}
+                    marginTop={'0px'}
+                    showSmartRoute={true}
+                    smart={smart}
+                />
                 <LocationDrawer/>
                 <div className='new-trip'>
                     <span>{ createTrip }</span>
-                    <ForDateTimePickers setTripTime={this.setTripTime} tripTime={tripTime}/>
                     <MuiThemeProvider theme={theme}>
+                    <AutoSuggestions
+                        label='Start point'
+                        setCoordinates={this.props.setMyCoordinates}
+                        setValue={this.setValueFrom}
+                        method='post'
+                        url='/api/points'
+                        data={{pointSearchText: this.state.valueFrom}}
+                        value={valueFrom}
+                        rejectEdit={this.rejectEdit}
+                    />
+                    <AutoSuggestions
+                        label='End point'
+                        setCoordinates={this.props.setTargetCoordinates}
+                        setValue={this.setValueTo}
+                        method='post'
+                        url='/api/points'
+                        data={{pointSearchText: this.state.valueTo}}
+                        value={valueTo}
+                        rejectEdit={this.rejectEdit}
+                    />
+                    <ForDateTimePickers setTripTime={this.setTripTime} tripTime={tripTime}/>
+
                         <RadioGroup
                             aria-label="position"
                             name="position"
@@ -273,33 +226,6 @@ class NewTrip extends Component {
                             />
                         </RadioGroup>
                     </MuiThemeProvider>
-
-                    <AutoSuggestions
-                        label='Start point'
-                        setCoordinates={this.props.setMyCoordinates}
-                        setValue={this.setValueFrom}
-                        method='post'
-                        url='/api/points'
-                        data={{pointSearchText: this.state.valueFrom}}
-                        value={valueFrom}
-                        rejectEdit={this.rejectEdit}
-                    />
-                    <AutoSuggestions
-                        label='End point'
-                        setCoordinates={this.props.setTargetCoordinates}
-                        setValue={this.setValueTo}
-                        method='post'
-                        url='/api/points'
-                        data={{pointSearchText: this.state.valueTo}}
-                        value={valueTo}
-                        rejectEdit={this.rejectEdit}
-                    />
-
-                    <Map
-                        height={230}
-                        showSmartRoute={true}
-                        smart={smart}
-                    />
                     {this.state.role === 'driver' &&
                     <div className='driver-container'>
                         <FormControl >

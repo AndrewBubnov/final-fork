@@ -92,7 +92,7 @@ class MainRender extends Component {
                 <Map
                     height={250}
                     showMainRoute={true}
-                    marginTop={'50px'}
+                    marginTop={'0px'}
                 />
                 <div style={{width: '100%', margin: '20px 0'}}>
                     <div className='main-buttons-container'>
