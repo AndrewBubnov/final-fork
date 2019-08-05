@@ -56,11 +56,5 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        setUserModerationArray: () => dispatch(setUserModerationArray()),
-        moderatePhotos: (data) => dispatch(moderatePhotos(data)),
-    }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Moderate)
+export default connect(mapStateToProps, { setUserModerationArray, moderatePhotos })(Moderate)

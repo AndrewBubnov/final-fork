@@ -13,15 +13,13 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function ControlledOpenSelect({ maxCount, setSeatCapacity }) {
+export default function ControlledOpenSelect({ maxCount, setSeatCapacity, capacity }) {
     const classes = useStyles();
-    const [capacity, setCapacity] = React.useState('');
     const [open, setOpen] = React.useState(false);
     const seatArray = Array.from({length: maxCount}, (item, index) => (`${index + 1} seat`))
 
-    function handleChange({target: {value}}) {
-        setCapacity(value);
-        setSeatCapacity(value);
+    function handleChange({target: {value}}){
+        setSeatCapacity(value + 1);
     }
 
     function handleClose() {
@@ -45,7 +43,7 @@ export default function ControlledOpenSelect({ maxCount, setSeatCapacity }) {
                     open={open}
                     onClose={handleClose}
                     onOpen={handleOpen}
-                    value={capacity}
+                    value={capacity - 1}
                     onChange={handleChange}
                     inputProps={{
                         id: 'demo-controlled-open-select',

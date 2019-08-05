@@ -279,7 +279,7 @@ class Map extends Component {
 
     componentDidUpdate(prevProps) {
         if (this.props.clearMap !== prevProps.clearMap){
-            this.clearMap()
+            this.clearMap(true)
             this.props.setClearMap(false)
         }
         if (this.props.targetCoordinates !== prevProps.targetCoordinates && this.props.targetCoordinates

@@ -23,6 +23,7 @@ const Main = (props) => {
     }, [])
 
     useEffect(() => {
+
         if (mainTripParams){
             setTripPointParams(true)
             const checkboxArray = props.joinStatusArray.map(item => {
@@ -68,14 +69,8 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        setMainTrips: (id) => dispatch(setMainTrips(id)),
-        clearMainTripId: () => dispatch(clearMainTripId()),
-    }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Main)
+export default connect(mapStateToProps, {setMainTrips, clearMainTripId})(Main)
 
 
 

@@ -86,11 +86,5 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        logOut: () => dispatch(logOut()),
-        topMenuToggle: (topMenuOpen) => dispatch(topMenuToggle(topMenuOpen))
-    }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Drawer)
+export default connect(mapStateToProps, { logOut, topMenuToggle })(Drawer)

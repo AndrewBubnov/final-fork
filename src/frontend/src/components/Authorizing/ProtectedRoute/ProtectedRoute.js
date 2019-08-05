@@ -36,15 +36,12 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        checkAuthorizationByToken: () => dispatch(checkAuthorizationByToken()),
-        setInitialLoadToFalse: () => dispatch(setInitialLoadToFalse()),
-        setPreviousRoute: (route) => dispatch(setPreviousRoute(route)),
-    }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProtectedRoute)
+export default connect(mapStateToProps, {
+    checkAuthorizationByToken,
+    setInitialLoadToFalse,
+    setPreviousRoute
+})(ProtectedRoute)
 
 
 

@@ -98,15 +98,15 @@ const Login = (props) => {
 
 
     useEffect(() => {
-            props.setAuthByToken();
-            if (localStorage.getItem('tripId') && localStorage.getItem('iTripper_page') === '/main') {
-                props.setMainTripIdFromStorage()
+        props.setAuthByToken();
+        if (localStorage.getItem('tripId') && localStorage.getItem('iTripper_page') === '/main') {
+            props.setMainTripIdFromStorage()
+        }
+        firebase.auth().onAuthStateChanged(authenticated => {
+            if (authenticated && !firebaseAuthed) {
+                setFirebaseAuthed(true)
             }
-            firebase.auth().onAuthStateChanged(authenticated => {
-                if (authenticated && !firebaseAuthed) {
-                    setFirebaseAuthed(true)
-                }
-            })
+        })
     }, [])
 
     useEffect(() => {
@@ -199,23 +199,23 @@ const Login = (props) => {
         }
 
         return (
-                <TextField
-                    key={item}
-                    type={type}
-                    label={label}
-                    autoFocus={autoFocus}
-                    style={style.input}
-                    autoComplete="off"
-                    name={item}
-                    value={user[item]}
-                    onChange={setUser}
-                    onBlur={onBlur}
-                    onFocus={onFocus}
-                    error={error[item].length > 0}
-                    helperText={error[item]}
-                    inputRef = {inputRef}
-                    InputProps={inputProps}
-                />
+            <TextField
+                key={item}
+                type={type}
+                label={label}
+                autoFocus={autoFocus}
+                style={style.input}
+                autoComplete="off"
+                name={item}
+                value={user[item]}
+                onChange={setUser}
+                onBlur={onBlur}
+                onFocus={onFocus}
+                error={error[item].length > 0}
+                helperText={error[item]}
+                inputRef = {inputRef}
+                InputProps={inputProps}
+            />
         )
     })
     return (
@@ -279,17 +279,14 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        setAuthorization: (state, signType) => dispatch(setAuthorization(state, signType)),
-        setSocialAuth: (auth) => dispatch(setSocialAuth(auth)),
-        setAuthByToken: () => dispatch(setAuthByToken()),
-        setMainTripIdFromStorage: () => dispatch(setMainTripIdFromStorage()),
-        errorPopupShow: () => dispatch(errorPopupShow()),
-    }
-}
 
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(Login))
+export default withStyles(styles)(connect(mapStateToProps, {
+    setAuthorization,
+    setSocialAuth,
+    setAuthByToken,
+    setMainTripIdFromStorage,
+    errorPopupShow
+})(Login))
 
 
 // import React, {Component} from 'react'

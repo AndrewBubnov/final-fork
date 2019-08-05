@@ -1,7 +1,7 @@
 import { SET_CURRENT_TRIP_PARAMS, SET_TRIP, SET_MY_COORDS, SET_TARGET_COORDS, SET_SEARCHED_LOCATION,
          SET_INTERMEDIATE_POINTS, SET_MAIN_TRIP_ID, DELETE_TRIP_FROM_HISTORY, SET_START_LOCATION,
          SET_FINISH_LOCATION, CLEAR_MAP, SET_MY_LOCATION, SET_USER_MAIN_TRIP_SHOWN,
-         SET_TRIP_SUPERPOSITION_PARAMS, SET_MAIN_TRIPS_PARAMS, SET_HAMBURGER_COLOR } from './trips'
+         SET_TRIP_SUPERPOSITION_PARAMS, SET_MAIN_TRIPS_PARAMS, SET_HAMBURGER_COLOR, JOIN_REQUEST_LOADED } from './trips'
 import { errorPopupShow } from './userCreators'
 import {callApi} from "../utils/utils";
 
@@ -147,6 +147,14 @@ export const clearMainTripId = () => dispatch => {
 
 export const setHamburgerColor = (color) => dispatch => {
     dispatch({type: SET_HAMBURGER_COLOR, payload: color})
+}
+//* **********************
+
+export const sendJoinTripRequest = (joinTrip) => dispatch => {
+    dispatch({type: JOIN_REQUEST_LOADED, payload: true})
+    callApi('post', 'api/trips/passengers', joinTrip)
+        .then(res => dispatch({type: JOIN_REQUEST_LOADED, payload: false}))
+        .catch(err => errorPopupShow())
 }
 
 

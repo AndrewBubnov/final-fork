@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import DateFnsUtils from "@date-io/date-fns"
+import {withStyles} from '@material-ui/core/styles'
 import {
   DatePicker,
   TimePicker,
@@ -13,16 +14,17 @@ class ForDateTimePickers extends Component {
   }
 
   render(){
-
+      const {classes} = this.props
     return (
       <div>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <DatePicker
             className = 'date-picker'
             style ={{
-              width:'25%',
-              paddingRight: 20
+              width:'30%',
+              paddingRight: 20,
             }}
+            InputProps={{ className: classes.input }}
             autoFocus={true}
             value={this.props.tripTime}
             onChange={this.handleDateTimeChange}
@@ -33,6 +35,7 @@ class ForDateTimePickers extends Component {
               width:'18%',
               paddingLeft: 20,
             }}
+            InputProps={{ className: classes.input }}
             value={this.props.tripTime}
             ampm={false}
             minutesStep = {5}
@@ -45,4 +48,9 @@ class ForDateTimePickers extends Component {
   }
 }
 
-export default ForDateTimePickers;
+const styles = theme => ({
+    input: {
+        color: '#fff',
+    }
+});
+export default withStyles(styles)(ForDateTimePickers);

@@ -52,10 +52,5 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        setErrorPopupOpen: (payload) => dispatch(setErrorPopupOpen(payload)),
-    }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Popup)
+export default connect(mapStateToProps, { setErrorPopupOpen })(Popup)

@@ -50,9 +50,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    topMenuToggle: (topMenuOpen) => dispatch(topMenuToggle(topMenuOpen))
-  }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(DrawerButton)
+export default connect(mapStateToProps, { topMenuToggle })(DrawerButton)

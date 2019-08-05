@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from "react-redux";
-import { setEndLocation, setMyCoordinates, setSearchedLocation } from "../../../actions/tripCreators";
+import { setEndLocation, setMyCoordinates, setSearchedLocation, setTargetCoordinates, setClearMap } from "../../../actions/tripCreators";
 import Drawer from '@material-ui/core/Drawer';
 import TextField from '@material-ui/core/TextField'
 import './LocationDrawer.css'
@@ -17,6 +17,12 @@ class LocationDrawer extends React.Component {
         this.setState({location: e.target.value})
     }
 
+    clearLocation = () => {
+        this.props.setSearchedLocation('')
+        this.props.setTargetCoordinates(null)
+        this.props.setClearMap(true)
+    }
+
     componentDidUpdate(prevProps){
         if (this.props.searchedLocation !== prevProps.searchedLocation){
             this.setState({location: this.props.searchedLocation})
@@ -27,7 +33,7 @@ class LocationDrawer extends React.Component {
         const { location } = this.state
         return (
             <div>
-                <Drawer anchor="top" open={this.props.searchedLocation.length > 0} onClose={() => this.props.setSearchedLocation('')} >
+                <Drawer anchor="top" open={this.props.searchedLocation.length > 0} onClose={this.clearLocation} >
                     <span className='location-drawer-header'>Use editable address</span>
                         <TextField
                         value={location}
@@ -66,18 +72,17 @@ class LocationDrawer extends React.Component {
 const mapStateToProps = (state) => {
     return {
         searchedLocation: state.trips.searchedLocation,
-        targetCoordinates: state.trips.targetCoordinates,
         startLocation: state.trips.startLocation,
-    }
-}
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        setEndLocation: (location, end) => dispatch(setEndLocation(location, end)),
-        setMyCoordinates: (coordinates) => dispatch(setMyCoordinates(coordinates)),
-        setSearchedLocation: (location) => dispatch(setSearchedLocation(location)),
+        targetCoordinates: state.trips.targetCoordinates,
+        myCoordinates: state.trips.myCoordinates,
     }
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(LocationDrawer)
+export default connect(mapStateToProps, {
+    setEndLocation,
+    setMyCoordinates,
+    setSearchedLocation,
+    setTargetCoordinates,
+    setClearMap
+})(LocationDrawer)

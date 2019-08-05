@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {setCurrentMainTripParams, setUserMainTripShown, setMainTrips} from "../../../actions/tripCreators";
-import {sendJoinTripRequest} from '../../../utils/utils'
+import {setCurrentMainTripParams, setUserMainTripShown, setMainTrips, sendJoinTripRequest} from "../../../actions/tripCreators";
+// import {sendJoinTripRequest} from '../../../utils/utils'
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button'
@@ -26,31 +26,35 @@ class MainRender extends Component {
                 tripPassengerTripId: this.props.joinIdArray[index],
                 tripPassengerJoinStatus: this.state.joinStatusArray[index]
             }
-            sendJoinTripRequest(joinTrip)
+            this.props.sendJoinTripRequest(joinTrip)
         })
     }
 
     handleChange = (index) => event => {
         const joinStatusArray = [...this.state.joinStatusArray]
         const checkboxArray = [...this.state.checkboxArray]
-        checkboxArray[index] = event.target.checked
-        this.setState({checkboxArray})
-        if (joinStatusArray[index] === 0) {
-            joinStatusArray[index] = 1
-            this.setJoinStatusArray(joinStatusArray, index)
+        if (!this.props.joinRequestIsLoaded){
+            checkboxArray[index] = event.target.checked
+            this.setState({checkboxArray})
+            if (joinStatusArray[index] === 0) {
+                joinStatusArray[index] = 1
+                this.setJoinStatusArray(joinStatusArray, index)
+            }
+            else if (joinStatusArray[index] === 1) {
+                joinStatusArray[index] = 0
+                this.setJoinStatusArray(joinStatusArray, index)
+            }
+            else if (joinStatusArray[index] === 2) {
+                joinStatusArray[index] = 3
+                this.setJoinStatusArray(joinStatusArray, index)
+            }
+            else if (joinStatusArray[index] === 3) {
+                joinStatusArray[index] = 0
+                this.setJoinStatusArray(joinStatusArray, index)
+            }
         }
-        else if (joinStatusArray[index] === 1) {
-            joinStatusArray[index] = 0
-            this.setJoinStatusArray(joinStatusArray, index)
-        }
-        else if (joinStatusArray[index] === 2) {
-            joinStatusArray[index] = 3
-            this.setJoinStatusArray(joinStatusArray, index)
-        }
-        else if (joinStatusArray[index] === 3) {
-            joinStatusArray[index] = 0
-            this.setJoinStatusArray(joinStatusArray, index)
-        }
+
+
     }
 
     componentDidUpdate(prevProps) {
@@ -128,6 +132,12 @@ class MainRender extends Component {
     }
 }
 
+const mapStateToProps = (state) => {
+    return {
+        joinRequestIsLoaded: state.trips.joinRequestIsLoaded
+    }
+}
+
 MainRender.propTypes = {
     mainTripPointNames: PropTypes.array,
     mainTripParams: PropTypes.array,
@@ -136,12 +146,9 @@ MainRender.propTypes = {
 }
 
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        setCurrentMainTripParams: (array) => dispatch(setCurrentMainTripParams(array)),
-        setUserMainTripShown: (value) => dispatch(setUserMainTripShown(value)),
-        setMainTrips: (tripId) => dispatch(setMainTrips(tripId)),
-    }
-}
-
-export default withStyles(styles)(connect(null, mapDispatchToProps)(MainRender))
+export default withStyles(styles)(connect(mapStateToProps, {
+    setCurrentMainTripParams,
+    setUserMainTripShown,
+    setMainTrips,
+    sendJoinTripRequest
+})(MainRender))

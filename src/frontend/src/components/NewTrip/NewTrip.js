@@ -163,7 +163,8 @@ class NewTrip extends Component {
     render() {
         const { classes } = this.props;
         const { smart } = this.props.location
-        const { role, car, valueFrom, valueTo, tripTime } = this.state
+        const { role, car, valueFrom, valueTo, tripTime, userCarSitsQty } = this.state
+
         let currentCar = this.props.userCars.length === 1 ? this.props.userCars[0] : car
 
         const createTrip = this.props.trips.myCoordinates ? 'create new trip from your current position' : 'create new trip'
@@ -225,7 +226,7 @@ class NewTrip extends Component {
                                 labelPlacement="top" color="primary"
                             />
                         </RadioGroup>
-                    </MuiThemeProvider>
+
                     {this.state.role === 'driver' &&
                     <div className='driver-container'>
                         <FormControl >
@@ -249,9 +250,11 @@ class NewTrip extends Component {
                         <CapacitySelect
                             maxCount={currentCar.userCarSitsQty}
                             setSeatCapacity={this.handleCapacity}
+                            capacity={userCarSitsQty}
                         />
                     </div>
                     }
+                    </MuiThemeProvider>
 
                     <div className="trip-btn-container">
                         <Button
@@ -260,7 +263,7 @@ class NewTrip extends Component {
                                 root: classes.acceptButton,
                                 label: classes.label
                             }}
-                            disabled={valueFrom.length === 0 || valueTo.length === 0 || (role === 'driver' && currentCar.length === 0)}
+                            disabled={valueFrom.length === 0 || valueTo.length === 0 || (role === 'driver' && (currentCar.length === 0 || userCarSitsQty === 0))}
                         >
                             Accept
                         </Button>
@@ -290,15 +293,12 @@ const mapStateToProps = state => {
     }
 }
 
-const mapDispatchToProps = dispatch => {
-    return {
-        setTargetCoordinates: (coords) => dispatch(setTargetCoordinates(coords)),
-        setMyCoordinates: (coordinates) => dispatch(setMyCoordinates(coordinates)),
-        setClearMap: (value) => dispatch(setClearMap(value)),
-        setTrip: (trip) => dispatch(setTrip(trip)),
-        setEndLocation: (location, end) => dispatch(setEndLocation(location, end)),
-        errorPopupShow: (errorMessage) => dispatch(errorPopupShow(errorMessage)),
-    }
-}
 
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(NewTrip));
+export default withStyles(styles)(connect(mapStateToProps, {
+    setTargetCoordinates,
+    setMyCoordinates,
+    setClearMap,
+    setTrip,
+    setEndLocation,
+    errorPopupShow
+})(NewTrip));

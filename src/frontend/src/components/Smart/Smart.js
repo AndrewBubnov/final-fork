@@ -139,11 +139,6 @@ const Smart = (props) => {
     }, [])
 
 
-    useEffect(() => {
-        if (props.mainTripId) props.history.push({pathname: '/main'})
-    }, [props.mainTripId])
-
-
     const userPoints = props.userPoints
     const firstEmptyUserPoint = userPoints.find(item => item.userPointName === '<no point>')
     let adDisable = userPoints.indexOf(firstEmptyUserPoint) === -1
@@ -248,18 +243,16 @@ const mapStateToProps = (state) => {
         searchedLocation: state.trips.searchedLocation,
     }
 }
-const mapDispatchToProps = (dispatch) => {
-    return {
-        logOut: () => dispatch(logOut()),
-        setUserPoints: (payload) => dispatch(setUserPoints(payload)),
-        setTrip: (trip) => dispatch(setTrip(trip)),
-        setMyCoordinates: (coords) => dispatch(setMyCoordinates(coords)),
-        setTargetCoordinates: (coords) => dispatch(setTargetCoordinates(coords)),
-        setSearchedLocation: (location) => dispatch(setSearchedLocation(location)),
-        setEndLocation: (location, end) => dispatch(setEndLocation(location, end)),
-    }
-}
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(Smart))
+
+export default withStyles(styles)(connect(mapStateToProps, {
+    setEndLocation,
+    setMyCoordinates,
+    setSearchedLocation,
+    setTargetCoordinates,
+    setTrip,
+    logOut,
+    setUserPoints
+})(Smart))
 
 
 // import React, {Component} from 'react'

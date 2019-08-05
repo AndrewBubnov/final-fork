@@ -307,13 +307,5 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        updateProfile: (user) => dispatch(updateProfile(user)),
-        setPhoto: (photo, user, subject) => dispatch(setPhoto(photo, user, subject)),
-        confirmEmail: (email) => dispatch(confirmEmail(email)),
-        clearCurrentCarPhoto: () => dispatch(clearCurrentCarPhoto()),
-    }
-}
 
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(Profile))
+export default withStyles(styles)(connect(mapStateToProps, { updateProfile, setPhoto, confirmEmail, clearCurrentCarPhoto })(Profile))
